@@ -1,0 +1,24 @@
+PODS:
+  - Alamofire (4.9.1)
+  - ParticlesLoadingView (0.5)
+  - SwiftySound (1.2.0)
+
+DEPENDENCIES:
+  - Alamofire (~> 4.9)
+  - ParticlesLoadingView
+  - SwiftySound
+
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - Alamofire
+    - ParticlesLoadingView
+    - SwiftySound
+
+SPEC CHECKSUMS:
+  Alamofire: 85e8a02c69d6020a0d734f6054870d7ecb75cf18
+  ParticlesLoadingView: 48704281aa7381d7c8c55cbe632f30bbc8d12604
+  SwiftySound: 9eb28bb14edb601b40027e44319e0ef8383f88bf
+
+PODFILE CHECKSUM: 461105ae724110a07a540a6bd694728d62239f53
+
+COCOAPODS: 1.7.5

@@ -1,0 +1,609 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 51;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		136EB1E952CC691AF72D5C86 /* Pods_Aurora.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0011B703B0FA545141BC4829 /* Pods_Aurora.framework */; };
+		F603C36924F8E7D5002A8F16 /* PurchasePopViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F603C36824F8E7D5002A8F16 /* PurchasePopViewController.swift */; };
+		F61052FF250F47C0003D93DC /* DBHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = F61052FE250F47C0003D93DC /* DBHelper.swift */; };
+		F610D27A2525B0510085AB2B /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = F610D2782525B0510085AB2B /* Reachability.m */; };
+		F61A21F7250758E600717B72 /* AFSecurityPolicy.m in Sources */ = {isa = PBXBuildFile; fileRef = F61A21E2250758E100717B72 /* AFSecurityPolicy.m */; };
+		F61A21F8250758E600717B72 /* AFNetworkReachabilityManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F61A21E3250758E100717B72 /* AFNetworkReachabilityManager.m */; };
+		F61A21F9250758E600717B72 /* AFURLSessionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F61A21E5250758E200717B72 /* AFURLSessionManager.m */; };
+		F61A21FA250758E600717B72 /* AFURLResponseSerialization.m in Sources */ = {isa = PBXBuildFile; fileRef = F61A21E6250758E200717B72 /* AFURLResponseSerialization.m */; };
+		F61A21FB250758E600717B72 /* AFHTTPRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = F61A21EB250758E300717B72 /* AFHTTPRequestOperation.m */; };
+		F61A21FC250758E600717B72 /* AFURLRequestSerialization.m in Sources */ = {isa = PBXBuildFile; fileRef = F61A21EE250758E400717B72 /* AFURLRequestSerialization.m */; };
+		F61A21FD250758E600717B72 /* AFURLConnectionOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = F61A21F1250758E500717B72 /* AFURLConnectionOperation.m */; };
+		F61A21FE250758E600717B72 /* AFHTTPRequestOperationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F61A21F2250758E500717B72 /* AFHTTPRequestOperationManager.m */; };
+		F61A21FF250758E600717B72 /* UIImageView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = F61A21F3250758E500717B72 /* UIImageView+AFNetworking.m */; };
+		F61A2200250758E600717B72 /* AFHTTPSessionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F61A21F6250758E600717B72 /* AFHTTPSessionManager.m */; };
+		F64160072510A76E009EC67E /* Aurora.swift in Sources */ = {isa = PBXBuildFile; fileRef = F64160062510A76E009EC67E /* Aurora.swift */; };
+		F65BEE62254986E90015B148 /* spark.png in Resources */ = {isa = PBXBuildFile; fileRef = F65BEE60254986E90015B148 /* spark.png */; };
+		F65BEE63254986E90015B148 /* Spark.sks in Resources */ = {isa = PBXBuildFile; fileRef = F65BEE61254986E90015B148 /* Spark.sks */; };
+		F665BA7E2500B58A00B4D5BB /* ARIALN.TTF in Resources */ = {isa = PBXBuildFile; fileRef = F665BA7D2500B58A00B4D5BB /* ARIALN.TTF */; };
+		F676C57224FCC9E900ACC1B8 /* aurora1024.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = F676C57124FCC9E900ACC1B8 /* aurora1024.mp4 */; };
+		F676C57424FCCA6900ACC1B8 /* VideoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F676C57324FCCA6900ACC1B8 /* VideoViewController.swift */; };
+		F686247924F0DEAF00A1A04F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F686247824F0DEAF00A1A04F /* AppDelegate.swift */; };
+		F686247B24F0DEAF00A1A04F /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F686247A24F0DEAF00A1A04F /* ViewController.swift */; };
+		F686247E24F0DEAF00A1A04F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F686247C24F0DEAF00A1A04F /* Main.storyboard */; };
+		F686248024F0DEB100A1A04F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F686247F24F0DEB100A1A04F /* Assets.xcassets */; };
+		F686248324F0DEB100A1A04F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F686248124F0DEB100A1A04F /* LaunchScreen.storyboard */; };
+		F686249224F0E3A600A1A04F /* SupportingFileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F686248E24F0E3A600A1A04F /* SupportingFileViewController.swift */; };
+		F686249424F0E3A600A1A04F /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = F686249024F0E3A600A1A04F /* MBProgressHUD.m */; };
+		F686249624F0E44400A1A04F /* Constant.swift in Sources */ = {isa = PBXBuildFile; fileRef = F686249524F0E44400A1A04F /* Constant.swift */; };
+		F68624A124F0E7DA00A1A04F /* Atma-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F686249724F0E7DA00A1A04F /* Atma-Medium.ttf */; };
+		F68624A224F0E7DA00A1A04F /* Atma-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F686249824F0E7DA00A1A04F /* Atma-Regular.ttf */; };
+		F68624A324F0E7DA00A1A04F /* Comfortaa-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F686249924F0E7DA00A1A04F /* Comfortaa-Regular.ttf */; };
+		F68624A424F0E7DA00A1A04F /* Comfortaa-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F686249A24F0E7DA00A1A04F /* Comfortaa-SemiBold.ttf */; };
+		F68624A524F0E7DA00A1A04F /* Atma-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F686249B24F0E7DA00A1A04F /* Atma-Light.ttf */; };
+		F68624A624F0E7DA00A1A04F /* Comfortaa-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F686249C24F0E7DA00A1A04F /* Comfortaa-Medium.ttf */; };
+		F68624A724F0E7DA00A1A04F /* Atma-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F686249D24F0E7DA00A1A04F /* Atma-Bold.ttf */; };
+		F68624A824F0E7DA00A1A04F /* Comfortaa-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F686249E24F0E7DA00A1A04F /* Comfortaa-Light.ttf */; };
+		F68624A924F0E7DA00A1A04F /* Comfortaa-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F686249F24F0E7DA00A1A04F /* Comfortaa-Bold.ttf */; };
+		F68624AA24F0E7DA00A1A04F /* Atma-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F68624A024F0E7DA00A1A04F /* Atma-SemiBold.ttf */; };
+		F69C691E24F3A2BD00274626 /* MusicDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F69C691D24F3A2BD00274626 /* MusicDetailViewController.swift */; };
+		F6ECA06D24F4DE0300D98EF8 /* TimerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6ECA06C24F4DE0300D98EF8 /* TimerViewController.swift */; };
+		F6ECA06F24F4F1A300D98EF8 /* SettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6ECA06E24F4F1A300D98EF8 /* SettingViewController.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		0011B703B0FA545141BC4829 /* Pods_Aurora.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Aurora.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		ADADA40B3588029E237BB31F /* Pods-Aurora.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Aurora.debug.xcconfig"; path = "Target Support Files/Pods-Aurora/Pods-Aurora.debug.xcconfig"; sourceTree = "<group>"; };
+		BA2FF3A72BACEFA6FBB74D7A /* Pods-Aurora.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Aurora.release.xcconfig"; path = "Target Support Files/Pods-Aurora/Pods-Aurora.release.xcconfig"; sourceTree = "<group>"; };
+		F603C36824F8E7D5002A8F16 /* PurchasePopViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchasePopViewController.swift; sourceTree = "<group>"; };
+		F61052FE250F47C0003D93DC /* DBHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DBHelper.swift; sourceTree = "<group>"; };
+		F610D2782525B0510085AB2B /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
+		F610D2792525B0510085AB2B /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
+		F61A21E2250758E100717B72 /* AFSecurityPolicy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFSecurityPolicy.m; sourceTree = "<group>"; };
+		F61A21E3250758E100717B72 /* AFNetworkReachabilityManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFNetworkReachabilityManager.m; sourceTree = "<group>"; };
+		F61A21E4250758E100717B72 /* UIImageView+AFNetworking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+AFNetworking.h"; sourceTree = "<group>"; };
+		F61A21E5250758E200717B72 /* AFURLSessionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFURLSessionManager.m; sourceTree = "<group>"; };
+		F61A21E6250758E200717B72 /* AFURLResponseSerialization.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFURLResponseSerialization.m; sourceTree = "<group>"; };
+		F61A21E7250758E200717B72 /* AFURLRequestSerialization.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFURLRequestSerialization.h; sourceTree = "<group>"; };
+		F61A21E8250758E200717B72 /* AFHTTPSessionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFHTTPSessionManager.h; sourceTree = "<group>"; };
+		F61A21E9250758E300717B72 /* AFNetworking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFNetworking.h; sourceTree = "<group>"; };
+		F61A21EA250758E300717B72 /* AFURLConnectionOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFURLConnectionOperation.h; sourceTree = "<group>"; };
+		F61A21EB250758E300717B72 /* AFHTTPRequestOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFHTTPRequestOperation.m; sourceTree = "<group>"; };
+		F61A21EC250758E300717B72 /* AFURLSessionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFURLSessionManager.h; sourceTree = "<group>"; };
+		F61A21ED250758E400717B72 /* AFNetworkReachabilityManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFNetworkReachabilityManager.h; sourceTree = "<group>"; };
+		F61A21EE250758E400717B72 /* AFURLRequestSerialization.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFURLRequestSerialization.m; sourceTree = "<group>"; };
+		F61A21EF250758E400717B72 /* AFHTTPRequestOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFHTTPRequestOperation.h; sourceTree = "<group>"; };
+		F61A21F0250758E500717B72 /* AFSecurityPolicy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFSecurityPolicy.h; sourceTree = "<group>"; };
+		F61A21F1250758E500717B72 /* AFURLConnectionOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFURLConnectionOperation.m; sourceTree = "<group>"; };
+		F61A21F2250758E500717B72 /* AFHTTPRequestOperationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFHTTPRequestOperationManager.m; sourceTree = "<group>"; };
+		F61A21F3250758E500717B72 /* UIImageView+AFNetworking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+AFNetworking.m"; sourceTree = "<group>"; };
+		F61A21F4250758E500717B72 /* AFURLResponseSerialization.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFURLResponseSerialization.h; sourceTree = "<group>"; };
+		F61A21F5250758E600717B72 /* AFHTTPRequestOperationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFHTTPRequestOperationManager.h; sourceTree = "<group>"; };
+		F61A21F6250758E600717B72 /* AFHTTPSessionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFHTTPSessionManager.m; sourceTree = "<group>"; };
+		F64160062510A76E009EC67E /* Aurora.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Aurora.swift; sourceTree = "<group>"; };
+		F65BEE60254986E90015B148 /* spark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = spark.png; sourceTree = "<group>"; };
+		F65BEE61254986E90015B148 /* Spark.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Spark.sks; sourceTree = "<group>"; };
+		F665BA7D2500B58A00B4D5BB /* ARIALN.TTF */ = {isa = PBXFileReference; lastKnownFileType = file; path = ARIALN.TTF; sourceTree = "<group>"; };
+		F676C57124FCC9E900ACC1B8 /* aurora1024.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = aurora1024.mp4; sourceTree = "<group>"; };
+		F676C57324FCCA6900ACC1B8 /* VideoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoViewController.swift; sourceTree = "<group>"; };
+		F686247524F0DEAF00A1A04F /* Aurora.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Aurora.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		F686247824F0DEAF00A1A04F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		F686247A24F0DEAF00A1A04F /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		F686247D24F0DEAF00A1A04F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		F686247F24F0DEB100A1A04F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		F686248224F0DEB100A1A04F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		F686248424F0DEB100A1A04F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F686248D24F0E3A500A1A04F /* Aurora-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Aurora-Bridging-Header.h"; sourceTree = "<group>"; };
+		F686248E24F0E3A600A1A04F /* SupportingFileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SupportingFileViewController.swift; sourceTree = "<group>"; };
+		F686249024F0E3A600A1A04F /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBProgressHUD.m; sourceTree = "<group>"; };
+		F686249124F0E3A600A1A04F /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBProgressHUD.h; sourceTree = "<group>"; };
+		F686249524F0E44400A1A04F /* Constant.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constant.swift; sourceTree = "<group>"; };
+		F686249724F0E7DA00A1A04F /* Atma-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Atma-Medium.ttf"; sourceTree = "<group>"; };
+		F686249824F0E7DA00A1A04F /* Atma-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Atma-Regular.ttf"; sourceTree = "<group>"; };
+		F686249924F0E7DA00A1A04F /* Comfortaa-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Comfortaa-Regular.ttf"; sourceTree = "<group>"; };
+		F686249A24F0E7DA00A1A04F /* Comfortaa-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Comfortaa-SemiBold.ttf"; sourceTree = "<group>"; };
+		F686249B24F0E7DA00A1A04F /* Atma-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Atma-Light.ttf"; sourceTree = "<group>"; };
+		F686249C24F0E7DA00A1A04F /* Comfortaa-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Comfortaa-Medium.ttf"; sourceTree = "<group>"; };
+		F686249D24F0E7DA00A1A04F /* Atma-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Atma-Bold.ttf"; sourceTree = "<group>"; };
+		F686249E24F0E7DA00A1A04F /* Comfortaa-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Comfortaa-Light.ttf"; sourceTree = "<group>"; };
+		F686249F24F0E7DA00A1A04F /* Comfortaa-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Comfortaa-Bold.ttf"; sourceTree = "<group>"; };
+		F68624A024F0E7DA00A1A04F /* Atma-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Atma-SemiBold.ttf"; sourceTree = "<group>"; };
+		F69C691D24F3A2BD00274626 /* MusicDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicDetailViewController.swift; sourceTree = "<group>"; };
+		F6ECA06C24F4DE0300D98EF8 /* TimerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerViewController.swift; sourceTree = "<group>"; };
+		F6ECA06E24F4F1A300D98EF8 /* SettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingViewController.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		F686247224F0DEAF00A1A04F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				136EB1E952CC691AF72D5C86 /* Pods_Aurora.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		99C34F696CFECE4AD75151AB /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				0011B703B0FA545141BC4829 /* Pods_Aurora.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		A231896547ACA1DEE172620C /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				ADADA40B3588029E237BB31F /* Pods-Aurora.debug.xcconfig */,
+				BA2FF3A72BACEFA6FBB74D7A /* Pods-Aurora.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
+		F686246C24F0DEAF00A1A04F = {
+			isa = PBXGroup;
+			children = (
+				F686247724F0DEAF00A1A04F /* Aurora */,
+				F686247624F0DEAF00A1A04F /* Products */,
+				A231896547ACA1DEE172620C /* Pods */,
+				99C34F696CFECE4AD75151AB /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		F686247624F0DEAF00A1A04F /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				F686247524F0DEAF00A1A04F /* Aurora.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		F686247724F0DEAF00A1A04F /* Aurora */ = {
+			isa = PBXGroup;
+			children = (
+				F65BEE60254986E90015B148 /* spark.png */,
+				F65BEE61254986E90015B148 /* Spark.sks */,
+				F676C57124FCC9E900ACC1B8 /* aurora1024.mp4 */,
+				F686247824F0DEAF00A1A04F /* AppDelegate.swift */,
+				F686247A24F0DEAF00A1A04F /* ViewController.swift */,
+				F69C691D24F3A2BD00274626 /* MusicDetailViewController.swift */,
+				F6ECA06C24F4DE0300D98EF8 /* TimerViewController.swift */,
+				F6ECA06E24F4F1A300D98EF8 /* SettingViewController.swift */,
+				F603C36824F8E7D5002A8F16 /* PurchasePopViewController.swift */,
+				F676C57324FCCA6900ACC1B8 /* VideoViewController.swift */,
+				F686247C24F0DEAF00A1A04F /* Main.storyboard */,
+				F686248A24F0E12500A1A04F /* Font */,
+				F686248C24F0E15600A1A04F /* SupportingFiles */,
+				F686247F24F0DEB100A1A04F /* Assets.xcassets */,
+				F686248124F0DEB100A1A04F /* LaunchScreen.storyboard */,
+				F686248424F0DEB100A1A04F /* Info.plist */,
+			);
+			path = Aurora;
+			sourceTree = "<group>";
+		};
+		F686248A24F0E12500A1A04F /* Font */ = {
+			isa = PBXGroup;
+			children = (
+				F665BA7D2500B58A00B4D5BB /* ARIALN.TTF */,
+				F686249D24F0E7DA00A1A04F /* Atma-Bold.ttf */,
+				F686249B24F0E7DA00A1A04F /* Atma-Light.ttf */,
+				F686249724F0E7DA00A1A04F /* Atma-Medium.ttf */,
+				F686249824F0E7DA00A1A04F /* Atma-Regular.ttf */,
+				F68624A024F0E7DA00A1A04F /* Atma-SemiBold.ttf */,
+				F686249F24F0E7DA00A1A04F /* Comfortaa-Bold.ttf */,
+				F686249E24F0E7DA00A1A04F /* Comfortaa-Light.ttf */,
+				F686249C24F0E7DA00A1A04F /* Comfortaa-Medium.ttf */,
+				F686249924F0E7DA00A1A04F /* Comfortaa-Regular.ttf */,
+				F686249A24F0E7DA00A1A04F /* Comfortaa-SemiBold.ttf */,
+			);
+			path = Font;
+			sourceTree = "<group>";
+		};
+		F686248C24F0E15600A1A04F /* SupportingFiles */ = {
+			isa = PBXGroup;
+			children = (
+				F610D2792525B0510085AB2B /* Reachability.h */,
+				F610D2782525B0510085AB2B /* Reachability.m */,
+				F64160062510A76E009EC67E /* Aurora.swift */,
+				F61052FE250F47C0003D93DC /* DBHelper.swift */,
+				F61A21EF250758E400717B72 /* AFHTTPRequestOperation.h */,
+				F61A21EB250758E300717B72 /* AFHTTPRequestOperation.m */,
+				F61A21F5250758E600717B72 /* AFHTTPRequestOperationManager.h */,
+				F61A21F2250758E500717B72 /* AFHTTPRequestOperationManager.m */,
+				F61A21E8250758E200717B72 /* AFHTTPSessionManager.h */,
+				F61A21F6250758E600717B72 /* AFHTTPSessionManager.m */,
+				F61A21E9250758E300717B72 /* AFNetworking.h */,
+				F61A21ED250758E400717B72 /* AFNetworkReachabilityManager.h */,
+				F61A21E3250758E100717B72 /* AFNetworkReachabilityManager.m */,
+				F61A21F0250758E500717B72 /* AFSecurityPolicy.h */,
+				F61A21E2250758E100717B72 /* AFSecurityPolicy.m */,
+				F61A21EA250758E300717B72 /* AFURLConnectionOperation.h */,
+				F61A21F1250758E500717B72 /* AFURLConnectionOperation.m */,
+				F61A21E7250758E200717B72 /* AFURLRequestSerialization.h */,
+				F61A21EE250758E400717B72 /* AFURLRequestSerialization.m */,
+				F61A21F4250758E500717B72 /* AFURLResponseSerialization.h */,
+				F61A21E6250758E200717B72 /* AFURLResponseSerialization.m */,
+				F61A21EC250758E300717B72 /* AFURLSessionManager.h */,
+				F61A21E5250758E200717B72 /* AFURLSessionManager.m */,
+				F61A21E4250758E100717B72 /* UIImageView+AFNetworking.h */,
+				F61A21F3250758E500717B72 /* UIImageView+AFNetworking.m */,
+				F686249524F0E44400A1A04F /* Constant.swift */,
+				F686249124F0E3A600A1A04F /* MBProgressHUD.h */,
+				F686249024F0E3A600A1A04F /* MBProgressHUD.m */,
+				F686248E24F0E3A600A1A04F /* SupportingFileViewController.swift */,
+				F686248D24F0E3A500A1A04F /* Aurora-Bridging-Header.h */,
+			);
+			path = SupportingFiles;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		F686247424F0DEAF00A1A04F /* Aurora */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F686248724F0DEB100A1A04F /* Build configuration list for PBXNativeTarget "Aurora" */;
+			buildPhases = (
+				0780B725A9DFA4BADA20AA19 /* [CP] Check Pods Manifest.lock */,
+				F686247124F0DEAF00A1A04F /* Sources */,
+				F686247224F0DEAF00A1A04F /* Frameworks */,
+				F686247324F0DEAF00A1A04F /* Resources */,
+				78104EB565F8318306393270 /* [CP] Embed Pods Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Aurora;
+			productName = Aurora;
+			productReference = F686247524F0DEAF00A1A04F /* Aurora.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		F686246D24F0DEAF00A1A04F /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 1020;
+				LastUpgradeCheck = 1020;
+				TargetAttributes = {
+					F686247424F0DEAF00A1A04F = {
+						CreatedOnToolsVersion = 10.2.1;
+						LastSwiftMigration = 1020;
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+						};
+					};
+				};
+			};
+			buildConfigurationList = F686247024F0DEAF00A1A04F /* Build configuration list for PBXProject "Aurora" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = F686246C24F0DEAF00A1A04F;
+			productRefGroup = F686247624F0DEAF00A1A04F /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				F686247424F0DEAF00A1A04F /* Aurora */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		F686247324F0DEAF00A1A04F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F68624A124F0E7DA00A1A04F /* Atma-Medium.ttf in Resources */,
+				F686248324F0DEB100A1A04F /* LaunchScreen.storyboard in Resources */,
+				F68624A524F0E7DA00A1A04F /* Atma-Light.ttf in Resources */,
+				F686248024F0DEB100A1A04F /* Assets.xcassets in Resources */,
+				F65BEE63254986E90015B148 /* Spark.sks in Resources */,
+				F68624A224F0E7DA00A1A04F /* Atma-Regular.ttf in Resources */,
+				F665BA7E2500B58A00B4D5BB /* ARIALN.TTF in Resources */,
+				F68624AA24F0E7DA00A1A04F /* Atma-SemiBold.ttf in Resources */,
+				F676C57224FCC9E900ACC1B8 /* aurora1024.mp4 in Resources */,
+				F68624A424F0E7DA00A1A04F /* Comfortaa-SemiBold.ttf in Resources */,
+				F68624A324F0E7DA00A1A04F /* Comfortaa-Regular.ttf in Resources */,
+				F68624A624F0E7DA00A1A04F /* Comfortaa-Medium.ttf in Resources */,
+				F68624A924F0E7DA00A1A04F /* Comfortaa-Bold.ttf in Resources */,
+				F68624A724F0E7DA00A1A04F /* Atma-Bold.ttf in Resources */,
+				F65BEE62254986E90015B148 /* spark.png in Resources */,
+				F686247E24F0DEAF00A1A04F /* Main.storyboard in Resources */,
+				F68624A824F0E7DA00A1A04F /* Comfortaa-Light.ttf in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		0780B725A9DFA4BADA20AA19 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Aurora-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		78104EB565F8318306393270 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Aurora/Pods-Aurora-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Aurora/Pods-Aurora-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Aurora/Pods-Aurora-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		F686247124F0DEAF00A1A04F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F686249224F0E3A600A1A04F /* SupportingFileViewController.swift in Sources */,
+				F686249424F0E3A600A1A04F /* MBProgressHUD.m in Sources */,
+				F686249624F0E44400A1A04F /* Constant.swift in Sources */,
+				F64160072510A76E009EC67E /* Aurora.swift in Sources */,
+				F6ECA06F24F4F1A300D98EF8 /* SettingViewController.swift in Sources */,
+				F6ECA06D24F4DE0300D98EF8 /* TimerViewController.swift in Sources */,
+				F69C691E24F3A2BD00274626 /* MusicDetailViewController.swift in Sources */,
+				F686247B24F0DEAF00A1A04F /* ViewController.swift in Sources */,
+				F61A2200250758E600717B72 /* AFHTTPSessionManager.m in Sources */,
+				F61A21FC250758E600717B72 /* AFURLRequestSerialization.m in Sources */,
+				F61A21FE250758E600717B72 /* AFHTTPRequestOperationManager.m in Sources */,
+				F61052FF250F47C0003D93DC /* DBHelper.swift in Sources */,
+				F61A21FF250758E600717B72 /* UIImageView+AFNetworking.m in Sources */,
+				F603C36924F8E7D5002A8F16 /* PurchasePopViewController.swift in Sources */,
+				F61A21FD250758E600717B72 /* AFURLConnectionOperation.m in Sources */,
+				F676C57424FCCA6900ACC1B8 /* VideoViewController.swift in Sources */,
+				F61A21F7250758E600717B72 /* AFSecurityPolicy.m in Sources */,
+				F610D27A2525B0510085AB2B /* Reachability.m in Sources */,
+				F61A21F8250758E600717B72 /* AFNetworkReachabilityManager.m in Sources */,
+				F61A21F9250758E600717B72 /* AFURLSessionManager.m in Sources */,
+				F61A21FB250758E600717B72 /* AFHTTPRequestOperation.m in Sources */,
+				F61A21FA250758E600717B72 /* AFURLResponseSerialization.m in Sources */,
+				F686247924F0DEAF00A1A04F /* AppDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		F686247C24F0DEAF00A1A04F /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				F686247D24F0DEAF00A1A04F /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		F686248124F0DEB100A1A04F /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				F686248224F0DEB100A1A04F /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		F686248524F0DEB100A1A04F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.2;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		F686248624F0DEB100A1A04F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.2;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		F686248824F0DEB100A1A04F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = ADADA40B3588029E237BB31F /* Pods-Aurora.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = W592QTP5VN;
+				INFOPLIST_FILE = Aurora/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.augurs.-Aurora.Aurora";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = 05/10_Dis;
+				SWIFT_OBJC_BRIDGING_HEADER = "Aurora/SupportingFiles/Aurora-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		F686248924F0DEB100A1A04F /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = BA2FF3A72BACEFA6FBB74D7A /* Pods-Aurora.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = W592QTP5VN;
+				INFOPLIST_FILE = Aurora/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.augurs.-Aurora.Aurora";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = 05/10_Dis;
+				SWIFT_OBJC_BRIDGING_HEADER = "Aurora/SupportingFiles/Aurora-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		F686247024F0DEAF00A1A04F /* Build configuration list for PBXProject "Aurora" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F686248524F0DEB100A1A04F /* Debug */,
+				F686248624F0DEB100A1A04F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F686248724F0DEB100A1A04F /* Build configuration list for PBXNativeTarget "Aurora" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F686248824F0DEB100A1A04F /* Debug */,
+				F686248924F0DEB100A1A04F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = F686246D24F0DEAF00A1A04F /* Project object */;
+}

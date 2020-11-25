@@ -1,0 +1,4 @@
+${PODS_ROOT}/Target Support Files/Pods-Aurora/Pods-Aurora-frameworks.sh
+${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework
+${BUILT_PRODUCTS_DIR}/ParticlesLoadingView/ParticlesLoadingView.framework
+${BUILT_PRODUCTS_DIR}/SwiftySound/SwiftySound.framework
