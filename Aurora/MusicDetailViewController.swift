@@ -1231,7 +1231,6 @@ class MusicDetailViewController: UIViewController, UITableViewDelegate, UITableV
                 bgView!.layer.maskedCorners = [.layerMaxXMaxYCorner, .layerMinXMaxYCorner]
             }
             else if indexPath.row == compositionMusicArray.count + 2
-                
             {
                 bgView!.clipsToBounds = true
                 bgView!.layer.cornerRadius = 30
