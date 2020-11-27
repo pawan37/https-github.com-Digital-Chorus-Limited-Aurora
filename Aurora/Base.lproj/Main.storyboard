@@ -378,7 +378,7 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="100" translatesAutoresizingMaskIntoConstraints="NO" id="Hvu-L2-87G">
+                            <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="240" translatesAutoresizingMaskIntoConstraints="NO" id="Hvu-L2-87G">
                                 <rect key="frame" x="116" y="293" width="197" height="30"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="29" id="R0y-py-QLW"/>
@@ -390,7 +390,7 @@
                                     <action selector="faderSliderChange_Action:" destination="enA-Xf-ryO" eventType="valueChanged" id="auq-mP-TuH"/>
                                 </connections>
                             </slider>
-                            <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="100" translatesAutoresizingMaskIntoConstraints="NO" id="Vkd-bu-IjR">
+                            <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="240" translatesAutoresizingMaskIntoConstraints="NO" id="Vkd-bu-IjR">
                                 <rect key="frame" x="151" y="364" width="162" height="30"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="29" id="Crv-cT-jAT"/>

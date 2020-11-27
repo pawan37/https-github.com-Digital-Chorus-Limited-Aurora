@@ -44,7 +44,54 @@ class SettingViewController: UIViewController {
     {
         self.navigationController?.popViewController(animated: true)
     }
+
+}
+
+extension SettingViewController : UITableViewDataSource, UITableViewDelegate
     
+{
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int
+        
+    {
+        return titleArray.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
+        
+    {
+        let cell : UITableViewCell!
+        if indexPath.row == 2
+        {
+            cell = tableView.dequeueReusableCell(withIdentifier: "Setting2")
+        }
+        else
+        {
+            cell = tableView.dequeueReusableCell(withIdentifier: "Setting")
+            let title = cell.viewWithTag(1) as? UILabel
+            title?.text = titleArray[indexPath.row]
+        }
+        cell.selectionStyle = UITableViewCell.SelectionStyle.none
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath)
+    {
+        if indexPath.row == 4
+        {
+            guard let url = URL(string: "https://www.aurorasleepmusic.com/app-faqs") else { return }
+            UIApplication.shared.open(url)
+        }
+        else if indexPath.row == 5
+        {
+            guard let url = URL(string: "https://www.aurorasleepmusic.com/app-terms") else { return }
+            UIApplication.shared.open(url)
+        }
+        else if indexPath.row == 6
+        {
+            guard let url = URL(string: "https://www.aurorasleepmusic.com/app-about") else { return }
+            UIApplication.shared.open(url)
+        }
+    }
     func loadFileAsync(url: URL, completion: @escaping (String?, Error?) -> Void)
     {
         let documentsUrl =  FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
@@ -97,55 +144,6 @@ class SettingViewController: UIViewController {
                 }
             })
             task.resume()
-        }
-    }
-    
-
-}
-
-extension SettingViewController : UITableViewDataSource, UITableViewDelegate
-    
-{
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int
-        
-    {
-        return titleArray.count
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
-        
-    {
-        let cell : UITableViewCell!
-        if indexPath.row == 2
-        {
-            cell = tableView.dequeueReusableCell(withIdentifier: "Setting2")
-        }
-        else
-        {
-            cell = tableView.dequeueReusableCell(withIdentifier: "Setting")
-            let title = cell.viewWithTag(1) as? UILabel
-            title?.text = titleArray[indexPath.row]
-        }
-        cell.selectionStyle = UITableViewCell.SelectionStyle.none
-        return cell
-    }
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath)
-    {
-        if indexPath.row == 4
-        {
-            guard let url = URL(string: "https://www.aurorasleepmusic.com/app-faqs") else { return }
-            UIApplication.shared.open(url)
-        }
-        else if indexPath.row == 5
-        {
-            guard let url = URL(string: "https://www.aurorasleepmusic.com/app-terms") else { return }
-            UIApplication.shared.open(url)
-        }
-        else if indexPath.row == 6
-        {
-            guard let url = URL(string: "https://www.aurorasleepmusic.com/app-about") else { return }
-            UIApplication.shared.open(url)
         }
     }
 }

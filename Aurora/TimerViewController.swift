@@ -66,13 +66,14 @@ class TimerViewController: UIViewController {
             faderSlider_ctrl.setThumbImage(UIImage(named: "Ellipse 33"), for: .highlighted)
             timerSlider_Ctrl.setThumbImage(UIImage(named: "Ellipse 33"), for: .normal)
             timerSlider_Ctrl.setThumbImage(UIImage(named: "Ellipse 33"), for: .highlighted)
-            
             Aurora_lbl.textColor = UIColor(red: 253/255, green: 141/255, blue: 141/255, alpha: 1)
             description_Lbl.textColor = UIColor.black
             fader_lbl.textColor = UIColor.black
             timer_Lbl.textColor = UIColor.black
             timerSettingLbl.textColor = UIColor.black
             countingLbl.textColor = UIColor.black
+            let tempfaderValue = UserDefaults.standard.object(forKey: "timerValues") as! Int
+            timerSlider_Ctrl.value = Float(tempfaderValue)
            }
           else
            {
@@ -129,10 +130,10 @@ class TimerViewController: UIViewController {
         // Do any additional setup after loading the view.
     }
     
-    
     @IBAction func faderSliderChange_Action(_ sender: UISlider)
     {
         let tempVolume : Int = Int(sender.value)
+        UserDefaults.standard.set(tempVolume, forKey: "faderValues")
         if tempVolume > timerSlideValue
         {
             faderSlider_ctrl.value = Float(timerSlideValue)
@@ -143,6 +144,7 @@ class TimerViewController: UIViewController {
     @IBAction func timerSliderChnage_Action(_ sender: UISlider)
     {
         let timerSlider : Int = Int(sender.value)
+        UserDefaults.standard.set(timerSlider, forKey: "timerValues")
         timerSlideValue = timerSlider
         timerValue = String(timerSlider)
     }
@@ -247,5 +249,6 @@ class TimerViewController: UIViewController {
         }
     }
     
+   
     
 }

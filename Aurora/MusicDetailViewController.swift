@@ -193,13 +193,17 @@ class MusicDetailViewController: UIViewController, UITableViewDelegate, UITableV
             {
                 timer_Lbl.isHidden = false
                 infinity_Imageview.isHidden = true
+                if UserDefaults.standard.object(forKey: "timerValues") != nil
+                {
+                    let timerValue = UserDefaults.standard.object(forKey: "timerValues")  as! Int
+                    self.timer_Lbl.text = String(timerValue) + ": 00"
+                }
             }
             else
             {
                 timer_Lbl.isHidden = true
                 infinity_Imageview.isHidden = false
             }
-            
         }
         else
         {
@@ -388,7 +392,6 @@ class MusicDetailViewController: UIViewController, UITableViewDelegate, UITableV
     
     @IBAction func resetBtn_Action(_ sender: Any)
     {
-    
         if supportingfuction.checkNetworkReachability() == true
         {
             if isPlay == false
@@ -426,7 +429,6 @@ class MusicDetailViewController: UIViewController, UITableViewDelegate, UITableV
         {
             supportingfuction.showMessageHudWithMessage("This Functionality working with online. Please Check your Network Connectivity" as NSString,delay: 2.0)
         }
-        
      }
     
     @IBAction func favourite_Action(_ sender: Any)
@@ -672,6 +674,144 @@ class MusicDetailViewController: UIViewController, UITableViewDelegate, UITableV
                     }
             }
           }
+        }
+    }
+    
+    func updateResponse()
+    {
+        for i in 0..<self.downloadedUrlArray.count
+        {
+            if i < self.tempCompositionArray.count
+            {
+                self.multySound = Sound(url: self.downloadedUrlArray.object(at: i) as! URL)
+                self.multySoundArray.append(self.multySound!)
+            }
+            //                                        else
+            //                                        {
+            //                                            self.soundMultySound = Sound(url: self.downloadedUrlArray.object(at: i) as! URL)
+            //                                            self.SoundmultySoundArray.append(self.soundMultySound!)
+            //                                        }
+        }
+        print(self.downloadedUrlArray)
+        DispatchQueue.global(qos: .background).async
+            {
+                print(self.multySoundArray)
+                for j in 0..<self.multySoundArray.count
+                {
+                    //  DispatchQueue.main.async
+                    //  {
+                    self.multySoundArray[j].play(numberOfLoops: -1, completion: nil)
+                    let tempVolume = self.volumeArray.object(at: j) as! Int
+                    let convertValue = CGFloat(tempVolume) / 100
+                    print(convertValue)
+                    
+                    if !(convertValue == 0.0)
+                    {
+                        self.multySoundArray[j].volume = Float(convertValue)
+                    }
+                    else
+                    {
+                        self.multySoundArray[j].volume = 0.0
+                    }
+                    //   }
+                }
+                
+                matchedSound()
+                
+                //                                        for k in 0..<self.SoundmultySoundArray.count
+                //                                        {
+                //                                          // DispatchQueue.main.async
+                //                                           // {
+                //                                                self.SoundmultySoundArray[k].play(numberOfLoops: -1, completion: nil)
+                //                                                self.SoundmultySoundArray[k].volume = 0.0
+                //                                           // }
+                //                                        }
+        }
+        
+        let audioSession = AVAudioSession.sharedInstance()
+        do
+        {
+            try audioSession.setCategory(AVAudioSession.Category.playback)
+        }
+        catch
+        {
+            fatalError("playback failed")
+        }
+        self.playBTn.isUserInteractionEnabled = true
+    }
+    
+    func matchedSound()
+    {
+        downloadedUrlArray = []
+        var url : URL!
+        for i in 0..<compositionMusicArray.count
+        {
+            let tempDict = self.compositionMusicArray.object(at: i) as? NSDictionary
+            if tempDict?.object(forKey: "instrumentAudioURL") != nil
+            {
+                url = URL(string: (tempDict?.object(forKey: "instrumentAudioURL") as? String)!)
+            }
+            else
+            {
+                url = URL(string: (tempDict?.object(forKey: "soundAudioURL") as? String)!)
+            }
+            self.loadFileAsync(url: url!) { (path, error) in
+                //    print("PDF File downloaded to : \(path!)")
+                let fullUrl = URL.init(fileURLWithPath: path!)
+                // print(fullUrl)
+                self.downloadedUrlArray.add(fullUrl)
+                DispatchQueue.main.async
+                    {
+                        if self.compositionMusicArray.count == self.downloadedUrlArray.count
+                        {
+                            if self.isPlaySoundOnce == true
+                            {
+                                self.isPlaySoundOnce = false
+                                self.rectangleBgView.isHidden = true
+                                self.rectangleBgView.stopAnimating()
+                                // self.multySound = nil
+                                //  self.multySoundArray = []
+                                for i in 0..<self.downloadedUrlArray.count
+                                {
+                                    self.multySound = Sound(url: self.downloadedUrlArray.object(at: i) as! URL)
+                                    self.multySoundArray.append(self.multySound!)
+                                }
+                                DispatchQueue.global(qos: .background).async
+                                    {
+                                        for j in 0..<self.multySoundArray.count
+                                        {
+                                            DispatchQueue.main.async
+                                                {
+                                                    self.multySoundArray[j].play(numberOfLoops: -1, completion: nil)
+                                                    let tempVolume = self.volumeArray.object(at: j) as! Int
+                                                    let convertValue = CGFloat(tempVolume) / 100
+                                                    print(convertValue)
+                                                    
+                                                    if !(convertValue == 0.0)
+                                                    {
+                                                        self.multySoundArray[j].volume = Float(convertValue)
+                                                    }
+                                                    else
+                                                    {
+                                                        self.multySoundArray[j].volume = 0.0
+                                                    }
+                                            }
+                                        }
+                                }
+                                let audioSession = AVAudioSession.sharedInstance()
+                                do
+                                {
+                                    try audioSession.setCategory(AVAudioSession.Category.playback)
+                                }
+                                catch
+                                {
+                                    fatalError("playback failed")
+                                }
+                                self.playBTn.isUserInteractionEnabled = true
+                            }
+                        }
+                }
+            }
         }
     }
     
