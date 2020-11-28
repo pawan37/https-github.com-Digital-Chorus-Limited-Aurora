@@ -62,6 +62,9 @@ class MusicDetailViewController: UIViewController, UITableViewDelegate, UITableV
     var localCompositionArray : NSMutableArray = []
     var localSoundArray : NSMutableArray = []
     var isFavourite : Bool = true
+    var totalSecond = Int()
+    var timer : Timer?
+    
     @IBOutlet weak var timer_Lbl: UILabel!
     @IBOutlet weak var infinity_Imageview: UIImageView!
     
@@ -207,8 +210,15 @@ class MusicDetailViewController: UIViewController, UITableViewDelegate, UITableV
         }
         else
         {
-            timer_Lbl.isHidden = true
-            infinity_Imageview.isHidden = false
+            timer_Lbl.isHidden = false
+            infinity_Imageview.isHidden = true
+            if UserDefaults.standard.object(forKey: "timerValues") != nil
+            {
+                let timerValue = UserDefaults.standard.object(forKey: "timerValues")  as! Int
+                self.timer_Lbl.text = String(timerValue) + ": 00"
+                totalSecond = timerValue * 60
+                print(totalSecond)
+            }
         }
     }
     
@@ -431,6 +441,15 @@ class MusicDetailViewController: UIViewController, UITableViewDelegate, UITableV
         }
      }
     
+//    func updateSound()
+//    {
+//        self.db.updateSoundByID(createdDate: tempDict.object(forKey: "_createdDate") as! String, SooundId: tempDict.object(forKey: "_id") as! String, owner: tempDict.object(forKey: "_owner") as! String, _updatedDate: tempDict.object(forKey: "_updatedDate") as! String, soundAudioURL: tempDict.object(forKey: "soundAudioURL") as! String, soundDisplayOrder: String(tempDict.object(forKey: "soundDisplayOrder") as! Int), soundLive: String(tempDict.object(forKey: "soundLive") as! Int), SoundName: tempDict.object(forKey: "soundName") as! String, instrumetVolumeDefault: "0", musicID: musicDetailDict.object(forKey: "musicID") as! String)
+//    }
+//    func updateSound()
+//    {
+//        self.db.updateSoundByID(createdDate: tempDict.object(forKey: "_createdDate") as! String, SooundId: tempDict.object(forKey: "_id") as! String, owner: tempDict.object(forKey: "_owner") as! String, _updatedDate: tempDict.object(forKey: "_updatedDate") as! String, soundAudioURL: tempDict.object(forKey: "soundAudioURL") as! String, soundDisplayOrder: String(tempDict.object(forKey: "soundDisplayOrder") as! Int), soundLive: String(tempDict.object(forKey: "soundLive") as! Int), SoundName: tempDict.object(forKey: "soundName") as! String, instrumetVolumeDefault: "0", musicID: musicDetailDict.object(forKey: "musicID") as! String)
+//    }
+    
     @IBAction func favourite_Action(_ sender: Any)
     {
        if isFavourite == true
@@ -457,6 +476,7 @@ class MusicDetailViewController: UIViewController, UITableViewDelegate, UITableV
         var url : URL!
         if isPlay == true
         {
+            startTimer()
             isPlay = false
             rectangleBgView.isHidden = false
             rectangleBgView.startAnimating()
@@ -518,7 +538,6 @@ class MusicDetailViewController: UIViewController, UITableViewDelegate, UITableV
                                 print(self.volumeArray)
                                 if self.isPlayOnce == true
                                 {
-                                    
                                     self.isPlayOnce = false
                                     self.playSoundInstrument()
 //                                    self.rectangleBgView.isHidden = true
@@ -602,6 +621,30 @@ class MusicDetailViewController: UIViewController, UITableViewDelegate, UITableV
         }
     }
     
+    func startTimer()
+    {
+        timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(countdown), userInfo: nil, repeats: true)
+    }
+    
+    @objc func countdown()
+    {
+        var minutes: Int
+        var seconds: Int
+        totalSecond = totalSecond - 1
+        let timerOn = UserDefaults.standard.object(forKey: "timerValues") as! Int
+        minutes = (totalSecond / 60)
+        seconds = (totalSecond % 3600) % 60
+//        if minutes <= 10
+//        {
+//            for i in 0..<multySoundArray.count
+//            {
+//                multySoundArray[i].volume = 0.01
+//                print(multySoundArray[i].volume)
+//            }
+//        }
+        timer_Lbl.text = String(format: "%02d:%02d", minutes, seconds)
+    }
+    
     func playSoundInstrument()
     {
         downloadedUrlArray = []
@@ -659,7 +702,7 @@ class MusicDetailViewController: UIViewController, UITableViewDelegate, UITableV
                                                 }
                                         }
                                     }
-                            }
+                               }
                             let audioSession = AVAudioSession.sharedInstance()
                             do
                             {
@@ -674,144 +717,6 @@ class MusicDetailViewController: UIViewController, UITableViewDelegate, UITableV
                     }
             }
           }
-        }
-    }
-    
-    func updateResponse()
-    {
-        for i in 0..<self.downloadedUrlArray.count
-        {
-            if i < self.tempCompositionArray.count
-            {
-                self.multySound = Sound(url: self.downloadedUrlArray.object(at: i) as! URL)
-                self.multySoundArray.append(self.multySound!)
-            }
-            //                                        else
-            //                                        {
-            //                                            self.soundMultySound = Sound(url: self.downloadedUrlArray.object(at: i) as! URL)
-            //                                            self.SoundmultySoundArray.append(self.soundMultySound!)
-            //                                        }
-        }
-        print(self.downloadedUrlArray)
-        DispatchQueue.global(qos: .background).async
-            {
-                print(self.multySoundArray)
-                for j in 0..<self.multySoundArray.count
-                {
-                    //  DispatchQueue.main.async
-                    //  {
-                    self.multySoundArray[j].play(numberOfLoops: -1, completion: nil)
-                    let tempVolume = self.volumeArray.object(at: j) as! Int
-                    let convertValue = CGFloat(tempVolume) / 100
-                    print(convertValue)
-                    
-                    if !(convertValue == 0.0)
-                    {
-                        self.multySoundArray[j].volume = Float(convertValue)
-                    }
-                    else
-                    {
-                        self.multySoundArray[j].volume = 0.0
-                    }
-                    //   }
-                }
-                
-                matchedSound()
-                
-                //                                        for k in 0..<self.SoundmultySoundArray.count
-                //                                        {
-                //                                          // DispatchQueue.main.async
-                //                                           // {
-                //                                                self.SoundmultySoundArray[k].play(numberOfLoops: -1, completion: nil)
-                //                                                self.SoundmultySoundArray[k].volume = 0.0
-                //                                           // }
-                //                                        }
-        }
-        
-        let audioSession = AVAudioSession.sharedInstance()
-        do
-        {
-            try audioSession.setCategory(AVAudioSession.Category.playback)
-        }
-        catch
-        {
-            fatalError("playback failed")
-        }
-        self.playBTn.isUserInteractionEnabled = true
-    }
-    
-    func matchedSound()
-    {
-        downloadedUrlArray = []
-        var url : URL!
-        for i in 0..<compositionMusicArray.count
-        {
-            let tempDict = self.compositionMusicArray.object(at: i) as? NSDictionary
-            if tempDict?.object(forKey: "instrumentAudioURL") != nil
-            {
-                url = URL(string: (tempDict?.object(forKey: "instrumentAudioURL") as? String)!)
-            }
-            else
-            {
-                url = URL(string: (tempDict?.object(forKey: "soundAudioURL") as? String)!)
-            }
-            self.loadFileAsync(url: url!) { (path, error) in
-                //    print("PDF File downloaded to : \(path!)")
-                let fullUrl = URL.init(fileURLWithPath: path!)
-                // print(fullUrl)
-                self.downloadedUrlArray.add(fullUrl)
-                DispatchQueue.main.async
-                    {
-                        if self.compositionMusicArray.count == self.downloadedUrlArray.count
-                        {
-                            if self.isPlaySoundOnce == true
-                            {
-                                self.isPlaySoundOnce = false
-                                self.rectangleBgView.isHidden = true
-                                self.rectangleBgView.stopAnimating()
-                                // self.multySound = nil
-                                //  self.multySoundArray = []
-                                for i in 0..<self.downloadedUrlArray.count
-                                {
-                                    self.multySound = Sound(url: self.downloadedUrlArray.object(at: i) as! URL)
-                                    self.multySoundArray.append(self.multySound!)
-                                }
-                                DispatchQueue.global(qos: .background).async
-                                    {
-                                        for j in 0..<self.multySoundArray.count
-                                        {
-                                            DispatchQueue.main.async
-                                                {
-                                                    self.multySoundArray[j].play(numberOfLoops: -1, completion: nil)
-                                                    let tempVolume = self.volumeArray.object(at: j) as! Int
-                                                    let convertValue = CGFloat(tempVolume) / 100
-                                                    print(convertValue)
-                                                    
-                                                    if !(convertValue == 0.0)
-                                                    {
-                                                        self.multySoundArray[j].volume = Float(convertValue)
-                                                    }
-                                                    else
-                                                    {
-                                                        self.multySoundArray[j].volume = 0.0
-                                                    }
-                                            }
-                                        }
-                                }
-                                let audioSession = AVAudioSession.sharedInstance()
-                                do
-                                {
-                                    try audioSession.setCategory(AVAudioSession.Category.playback)
-                                }
-                                catch
-                                {
-                                    fatalError("playback failed")
-                                }
-                                self.playBTn.isUserInteractionEnabled = true
-                            }
-                        }
-                }
-            }
         }
     }
     

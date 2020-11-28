@@ -96,6 +96,11 @@ class TimerViewController: UIViewController {
         }
         else
         {
+            if UserDefaults.standard.object(forKey: "timerValues") != nil
+            {
+                let tempfaderValue = UserDefaults.standard.object(forKey: "timerValues") as! Int
+                timerSlider_Ctrl.value = Float(tempfaderValue)
+            }
             switch_Ctrl.isOn = true
             faderSlider_ctrl.minimumTrackTintColor = UIColor(red: 253/255, green: 141/255, blue: 141/255, alpha: 1)
             timerSlider_Ctrl.minimumTrackTintColor = UIColor(red: 253/255, green: 141/255, blue: 141/255, alpha: 1)
@@ -129,6 +134,11 @@ class TimerViewController: UIViewController {
 //        }
         // Do any additional setup after loading the view.
     }
+    
+//    func updateSound()
+//    {
+//        self.db.updateSoundByID(createdDate: tempDict.object(forKey: "_createdDate") as! String, SooundId: tempDict.object(forKey: "_id") as! String, owner: tempDict.object(forKey: "_owner") as! String, _updatedDate: tempDict.object(forKey: "_updatedDate") as! String, soundAudioURL: tempDict.object(forKey: "soundAudioURL") as! String, soundDisplayOrder: String(tempDict.object(forKey: "soundDisplayOrder") as! Int), soundLive: String(tempDict.object(forKey: "soundLive") as! Int), SoundName: tempDict.object(forKey: "soundName") as! String, instrumetVolumeDefault: "0", musicID: musicDetailDict.object(forKey: "musicID") as! String)
+//    }
     
     @IBAction func faderSliderChange_Action(_ sender: UISlider)
     {
@@ -194,60 +204,7 @@ class TimerViewController: UIViewController {
         }
     }
     
-    func loadFileAsync(url: URL, completion: @escaping (String?, Error?) -> Void)
-    {
-        let documentsUrl =  FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
-        
-        let destinationUrl = documentsUrl.appendingPathComponent(url.lastPathComponent)
-        
-        if FileManager().fileExists(atPath: destinationUrl.path)
-        {
-            //  print("File already exists [\(destinationUrl.path)]")
-            completion(destinationUrl.path, nil)
-        }
-        else
-        {
-            // MBProgressHUD.showAdded(to: view, animated: true)
-            let session = URLSession(configuration: URLSessionConfiguration.default, delegate: nil, delegateQueue: nil)
-            var request = URLRequest(url: url)
-            request.httpMethod = "GET"
-            let task = session.dataTask(with: request, completionHandler:
-            {
-                data, response, error in
-                if error == nil
-                {
-                    //  MBProgressHUD.hide(for: self.view, animated: true)
-                    if let response = response as? HTTPURLResponse
-                    {
-                        if response.statusCode == 200
-                        {
-                            if let data = data
-                            {
-                                if let _ = try? data.write(to: destinationUrl, options: Data.WritingOptions.atomic)
-                                {
-                                    completion(destinationUrl.path, error)
-                                }
-                                else
-                                {
-                                    completion(destinationUrl.path, error)
-                                }
-                                // print(destinationUrl.path)
-                            }
-                            else
-                            {
-                                completion(destinationUrl.path, error)
-                            }
-                        }
-                    }
-                }
-                else
-                {
-                    completion(destinationUrl.path, error)
-                }
-            })
-            task.resume()
-        }
-    }
+    
     
    
     
