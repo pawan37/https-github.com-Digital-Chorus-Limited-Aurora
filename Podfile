@@ -11,6 +11,7 @@ target 'Aurora' do
      pod 'Alamofire', '~> 4.9'
      pod 'ParticlesLoadingView'
      pod 'SwiftySound'
+     pod 'Cephalopod', '~> 4.0'
   
 
 end

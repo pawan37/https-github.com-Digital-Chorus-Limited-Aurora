@@ -11,6 +11,7 @@ import ParticlesLoadingView
 import SpriteKit
 import SwiftySound
 import AVFoundation
+import Cephalopod
 
 
 class MusicDetailViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
@@ -64,6 +65,7 @@ class MusicDetailViewController: UIViewController, UITableViewDelegate, UITableV
     var isFavourite : Bool = true
     var totalSecond = Int()
     var timer : Timer?
+    var cephalopod: Cephalopod?
     
     @IBOutlet weak var timer_Lbl: UILabel!
     @IBOutlet weak var infinity_Imageview: UIImageView!
@@ -476,7 +478,7 @@ class MusicDetailViewController: UIViewController, UITableViewDelegate, UITableV
         var url : URL!
         if isPlay == true
         {
-            startTimer()
+           // startTimer()
             isPlay = false
             rectangleBgView.isHidden = false
             rectangleBgView.startAnimating()
@@ -610,6 +612,7 @@ class MusicDetailViewController: UIViewController, UITableViewDelegate, UITableV
         }
         else
         {
+           // timer?.invalidate()
             isPlay = true
             isPlayOnce = true
             isPlaySoundOnce = true
@@ -626,20 +629,41 @@ class MusicDetailViewController: UIViewController, UITableViewDelegate, UITableV
         timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(countdown), userInfo: nil, repeats: true)
     }
     
+    func playwithfadeOut()
+    {
+//       for i in 0..<multySoundArray.count
+//       {
+//         cephalopod = Cephalopod(player: curre)
+//       }
+    }
+    
     @objc func countdown()
     {
         var minutes: Int
         var seconds: Int
         totalSecond = totalSecond - 1
+        if totalSecond == 0
+        {
+        }
         let timerOn = UserDefaults.standard.object(forKey: "timerValues") as! Int
         minutes = (totalSecond / 60)
         seconds = (totalSecond % 3600) % 60
+        if timerOn > 10 || timerOn < 30
+        {
+            for i in 0..<multySoundArray.count
+            {
+                let volume = multySoundArray[i].volume
+                print(volume)
+            }
+        }
 //        if minutes <= 10
 //        {
 //            for i in 0..<multySoundArray.count
 //            {
-//                multySoundArray[i].volume = 0.01
+//                //multySoundArray[i].volume = 0.01
+//                multySoundArray[i].volume = multySoundArray[i].volume - 0.1
 //                print(multySoundArray[i].volume)
+//              //  multySoundArray[i]
 //            }
 //        }
         timer_Lbl.text = String(format: "%02d:%02d", minutes, seconds)
@@ -674,6 +698,7 @@ class MusicDetailViewController: UIViewController, UITableViewDelegate, UITableV
                             self.isPlaySoundOnce = false
                             self.rectangleBgView.isHidden = true
                             self.rectangleBgView.stopAnimating()
+                            self.startTimer()
                             // self.multySound = nil
                             //  self.multySoundArray = []
                             for i in 0..<self.downloadedUrlArray.count
@@ -854,7 +879,6 @@ class MusicDetailViewController: UIViewController, UITableViewDelegate, UITableV
                                         {
                                             let tempDict = self.localCompositionArray.object(at: k) as! NSDictionary
                                             self.db.deleteComposition(Id: tempDict.object(forKey: "musicID") as! String, name: tempDict.object(forKey: "instrumentName") as! String)
-                                            
                                         }
                                         
                                         for n in 0..<matchArray.count

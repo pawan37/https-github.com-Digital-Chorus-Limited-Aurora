@@ -1,24 +1,28 @@
 PODS:
   - Alamofire (4.9.1)
+  - Cephalopod (4.0.0)
   - ParticlesLoadingView (0.5)
   - SwiftySound (1.2.0)
 
 DEPENDENCIES:
   - Alamofire (~> 4.9)
+  - Cephalopod (~> 4.0)
   - ParticlesLoadingView
   - SwiftySound
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
     - Alamofire
+    - Cephalopod
     - ParticlesLoadingView
     - SwiftySound
 
 SPEC CHECKSUMS:
   Alamofire: 85e8a02c69d6020a0d734f6054870d7ecb75cf18
+  Cephalopod: 1afbb532692adad579ba768bcc71018d6386d1e3
   ParticlesLoadingView: 48704281aa7381d7c8c55cbe632f30bbc8d12604
   SwiftySound: 9eb28bb14edb601b40027e44319e0ef8383f88bf
 
-PODFILE CHECKSUM: 461105ae724110a07a540a6bd694728d62239f53
+PODFILE CHECKSUM: 668397ab0e42ea413c12a5289208953b5a4a8dc7
 
 COCOAPODS: 1.7.5
