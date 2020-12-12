@@ -73,7 +73,31 @@ class TimerViewController: UIViewController {
             timerSettingLbl.textColor = UIColor.black
             countingLbl.textColor = UIColor.black
             let tempfaderValue = UserDefaults.standard.object(forKey: "timerValues") as! Int
+            let faderValue = UserDefaults.standard.object(forKey: "faderValues") as! Int
             timerSlider_Ctrl.value = Float(tempfaderValue)
+            faderSlider_ctrl.value = Float(faderValue)
+            var tempFader : Int = 0
+            if tempfaderValue == 10
+            {
+                tempFader = 0
+            }
+            else if tempfaderValue > 10 && tempfaderValue <= 30
+            {
+                tempFader = 12
+            }
+            else if tempfaderValue > 30 && tempfaderValue <= 60
+            {
+                tempFader = 23
+            }
+            else if tempfaderValue > 60 && tempfaderValue <= 120
+            {
+                tempFader = 46
+            }
+            else if tempfaderValue > 120 && tempfaderValue <= 180
+            {
+                tempFader = 69
+            }
+            description_Lbl.text = "The Music will start fading out slowly after " + String(tempFader) + " minutes and will stop after " + String(tempfaderValue) + " minuts"
            }
           else
            {
@@ -100,6 +124,16 @@ class TimerViewController: UIViewController {
             {
                 let tempfaderValue = UserDefaults.standard.object(forKey: "timerValues") as! Int
                 timerSlider_Ctrl.value = Float(tempfaderValue)
+                let faderSliderValue = UserDefaults.standard.object(forKey: "timerValues") as! Int
+                faderSlider_ctrl.value = Float(faderSliderValue)
+            }
+            else
+            {
+                UserDefaults.standard.set(60, forKey: "timerValues")
+                UserDefaults.standard.set(23, forKey: "faderValues")
+                timerSlider_Ctrl.value = 60.0
+                faderSlider_ctrl.value = 23.0
+                
             }
             switch_Ctrl.isOn = true
             faderSlider_ctrl.minimumTrackTintColor = UIColor(red: 253/255, green: 141/255, blue: 141/255, alpha: 1)
@@ -157,6 +191,28 @@ class TimerViewController: UIViewController {
         UserDefaults.standard.set(timerSlider, forKey: "timerValues")
         timerSlideValue = timerSlider
         timerValue = String(timerSlider)
+        var tempFader : Int = 0
+        if timerSlider == 10
+        {
+            tempFader = 0
+        }
+        else if timerSlider > 10 && timerSlider <= 30
+        {
+            tempFader = 12
+        }
+        else if timerSlider > 30 && timerSlider <= 60
+        {
+            tempFader = 23
+        }
+        else if timerSlider > 60 && timerSlider <= 120
+        {
+            tempFader = 46
+        }
+        else if timerSlider > 120 && timerSlider <= 180
+        {
+            tempFader = 69
+        }
+        description_Lbl.text = "The Music will start fading out slowly after " + String(tempFader) + " minutes and will stop after " + String(timerSlider) + " minuts"
     }
     
     @IBAction func backBtn_Action(_ sender: Any)
@@ -203,9 +259,6 @@ class TimerViewController: UIViewController {
             timerSlider_Ctrl.setThumbImage(UIImage(named: "Ellipse 43"), for: .highlighted)
         }
     }
-    
-    
-    
-   
+ 
     
 }

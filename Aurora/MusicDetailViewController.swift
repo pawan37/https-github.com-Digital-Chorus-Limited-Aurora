@@ -11,7 +11,6 @@ import ParticlesLoadingView
 import SpriteKit
 import SwiftySound
 import AVFoundation
-import Cephalopod
 
 
 class MusicDetailViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
@@ -65,7 +64,6 @@ class MusicDetailViewController: UIViewController, UITableViewDelegate, UITableV
     var isFavourite : Bool = true
     var totalSecond = Int()
     var timer : Timer?
-    var cephalopod: Cephalopod?
     
     @IBOutlet weak var timer_Lbl: UILabel!
     @IBOutlet weak var infinity_Imageview: UIImageView!
@@ -202,6 +200,8 @@ class MusicDetailViewController: UIViewController, UITableViewDelegate, UITableV
                 {
                     let timerValue = UserDefaults.standard.object(forKey: "timerValues")  as! Int
                     self.timer_Lbl.text = String(timerValue) + ": 00"
+                    totalSecond = timerValue * 60
+                    print(totalSecond)
                 }
             }
             else
@@ -216,6 +216,14 @@ class MusicDetailViewController: UIViewController, UITableViewDelegate, UITableV
             infinity_Imageview.isHidden = true
             if UserDefaults.standard.object(forKey: "timerValues") != nil
             {
+                let timerValue = UserDefaults.standard.object(forKey: "timerValues")  as! Int
+                self.timer_Lbl.text = String(timerValue) + ": 00"
+                totalSecond = timerValue * 60
+                print(totalSecond)
+            }
+            else
+            {
+                UserDefaults.standard.set(60, forKey: "timerValues")
                 let timerValue = UserDefaults.standard.object(forKey: "timerValues")  as! Int
                 self.timer_Lbl.text = String(timerValue) + ": 00"
                 totalSecond = timerValue * 60
@@ -255,6 +263,7 @@ class MusicDetailViewController: UIViewController, UITableViewDelegate, UITableV
     
     @IBAction func backBtn_Action(_ sender: Any)
     {
+        timer?.invalidate()
         self.navigationController?.popViewController(animated: true)
     }
     
@@ -612,7 +621,7 @@ class MusicDetailViewController: UIViewController, UITableViewDelegate, UITableV
         }
         else
         {
-           // timer?.invalidate()
+            timer?.invalidate()
             isPlay = true
             isPlayOnce = true
             isPlaySoundOnce = true
@@ -629,31 +638,269 @@ class MusicDetailViewController: UIViewController, UITableViewDelegate, UITableV
         timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(countdown), userInfo: nil, repeats: true)
     }
     
-    func playwithfadeOut()
-    {
-//       for i in 0..<multySoundArray.count
-//       {
-//         cephalopod = Cephalopod(player: curre)
-//       }
-    }
+   
     
     @objc func countdown()
     {
         var minutes: Int
         var seconds: Int
         totalSecond = totalSecond - 1
-        if totalSecond == 0
-        {
-        }
         let timerOn = UserDefaults.standard.object(forKey: "timerValues") as! Int
         minutes = (totalSecond / 60)
         seconds = (totalSecond % 3600) % 60
         if timerOn > 10 || timerOn < 30
         {
-            for i in 0..<multySoundArray.count
+            if minutes == 12 && seconds == 00
             {
-                let volume = multySoundArray[i].volume
-                print(volume)
+                for i in 0..<multySoundArray.count
+                {
+                    let volume = multySoundArray[i].volume
+                    if !(volume == 0.0)
+                    {
+                        self.multySoundArray[i].volume = volume - 0.2
+                        print(self.multySoundArray[i].volume)
+                    }
+                    print(volume)
+                }
+            }
+            if minutes == 8 && seconds == 00
+            {
+                for i in 0..<multySoundArray.count
+                {
+                    let volume = multySoundArray[i].volume
+                    if !(volume == 0.0)
+                    {
+                        self.multySoundArray[i].volume = volume - 0.2
+                        print(self.multySoundArray[i].volume)
+                    }
+                    print(volume)
+                }
+            }
+            else if minutes == 5 && seconds == 00
+            {
+                for i in 0..<multySoundArray.count
+                {
+                    let volume = multySoundArray[i].volume
+                    if !(volume == 0.0)
+                    {
+                        self.multySoundArray[i].volume = volume - 0.1
+                        print(self.multySoundArray[i].volume)
+                    }
+                    print(volume)
+                }
+            }
+            else if minutes == 0 && seconds == 00
+            {
+                timer?.invalidate()
+                isPlay = true
+                isPlayOnce = true
+                isPlaySoundOnce = true
+                playBTn.setBackgroundImage(UIImage(named: "playBtnBG"), for: .normal)
+                for i in 0..<multySoundArray.count
+                {
+                    multySoundArray[i].stop()
+                }
+            }
+        }
+        else if timerOn > 30 || timerOn < 60
+        {
+            if minutes == 23 && seconds == 00
+            {
+                for i in 0..<multySoundArray.count
+                {
+                    let volume = multySoundArray[i].volume
+                    if !(volume == 0.0)
+                    {
+                        self.multySoundArray[i].volume = volume - 0.2
+                        print(self.multySoundArray[i].volume)
+                    }
+                    print(volume)
+                }
+            }
+            else if minutes == 15 && seconds == 00
+            {
+                for i in 0..<multySoundArray.count
+                {
+                    let volume = multySoundArray[i].volume
+                    if !(volume == 0.0)
+                    {
+                        self.multySoundArray[i].volume = volume - 0.2
+                        print(self.multySoundArray[i].volume)
+                    }
+                    print(volume)
+                }
+            }
+            else if minutes == 10 && seconds == 00
+            {
+                for i in 0..<multySoundArray.count
+                {
+                    let volume = multySoundArray[i].volume
+                    if !(volume == 0.0)
+                    {
+                        self.multySoundArray[i].volume = volume - 0.1
+                        print(self.multySoundArray[i].volume)
+                    }
+                    print(volume)
+                }
+            }
+            else if minutes == 0 && seconds == 00
+            {
+                timer?.invalidate()
+                isPlay = true
+                isPlayOnce = true
+                isPlaySoundOnce = true
+                playBTn.setBackgroundImage(UIImage(named: "playBtnBG"), for: .normal)
+                for i in 0..<multySoundArray.count
+                {
+                    multySoundArray[i].stop()
+                }
+            }
+        }
+        else if timerOn > 60 || timerOn < 120
+        {
+            if minutes == 46 && seconds == 00
+            {
+                for i in 0..<multySoundArray.count
+                {
+                    let volume = multySoundArray[i].volume
+                    if !(volume == 0.0)
+                    {
+                        self.multySoundArray[i].volume = volume - 0.2
+                        print(self.multySoundArray[i].volume)
+                    }
+                    print(volume)
+                }
+            }
+            else if minutes == 35 && seconds == 00
+            {
+                for i in 0..<multySoundArray.count
+                {
+                    let volume = multySoundArray[i].volume
+                    if !(volume == 0.0)
+                    {
+                        self.multySoundArray[i].volume = volume - 0.2
+                        print(self.multySoundArray[i].volume)
+                    }
+                    print(volume)
+                }
+            }
+            else if minutes == 25 && seconds == 00
+            {
+                for i in 0..<multySoundArray.count
+                {
+                    let volume = multySoundArray[i].volume
+                    if !(volume == 0.0)
+                    {
+                        self.multySoundArray[i].volume = volume - 0.1
+                        print(self.multySoundArray[i].volume)
+                    }
+                    print(volume)
+                }
+            }
+            else if minutes == 10 && seconds == 00
+            {
+                for i in 0..<multySoundArray.count
+                {
+                    let volume = multySoundArray[i].volume
+                    if !(volume == 0.0)
+                    {
+                        self.multySoundArray[i].volume = volume - 0.1
+                        print(self.multySoundArray[i].volume)
+                    }
+                    print(volume)
+                }
+            }
+            else if minutes == 0 && seconds == 00
+            {
+                timer?.invalidate()
+                isPlay = true
+                isPlayOnce = true
+                isPlaySoundOnce = true
+                playBTn.setBackgroundImage(UIImage(named: "playBtnBG"), for: .normal)
+                for i in 0..<multySoundArray.count
+                {
+                    multySoundArray[i].stop()
+                }
+            }
+        }
+        else if timerOn > 120 || timerOn < 180
+        {
+            if minutes == 69 && seconds == 00
+            {
+                for i in 0..<multySoundArray.count
+                {
+                    let volume = multySoundArray[i].volume
+                    if !(volume == 0.0)
+                    {
+                        self.multySoundArray[i].volume = volume - 0.2
+                        print(self.multySoundArray[i].volume)
+                    }
+                    print(volume)
+                }
+            }
+            if minutes == 60 && seconds == 00
+            {
+                for i in 0..<multySoundArray.count
+                {
+                    let volume = multySoundArray[i].volume
+                    if !(volume == 0.0)
+                    {
+                        self.multySoundArray[i].volume = volume - 0.2
+                        print(self.multySoundArray[i].volume)
+                    }
+                    print(volume)
+                }
+            }
+            else if minutes == 55 && seconds == 00
+            {
+                for i in 0..<multySoundArray.count
+                {
+                    let volume = multySoundArray[i].volume
+                    if !(volume == 0.0)
+                    {
+                        self.multySoundArray[i].volume = volume - 0.2
+                        print(self.multySoundArray[i].volume)
+                    }
+                    print(volume)
+                }
+            }
+            else if minutes == 25 && seconds == 00
+            {
+                for i in 0..<multySoundArray.count
+                {
+                    let volume = multySoundArray[i].volume
+                    if !(volume == 0.0)
+                    {
+                        self.multySoundArray[i].volume = volume - 0.1
+                        print(self.multySoundArray[i].volume)
+                    }
+                    print(volume)
+                }
+            }
+            else if minutes == 10 && seconds == 00
+            {
+                for i in 0..<multySoundArray.count
+                {
+                    let volume = multySoundArray[i].volume
+                    if !(volume == 0.0)
+                    {
+                        self.multySoundArray[i].volume = volume - 0.1
+                        print(self.multySoundArray[i].volume)
+                    }
+                    print(volume)
+                }
+            }
+            else if minutes == 0 && seconds == 00
+            {
+                timer?.invalidate()
+                isPlay = true
+                isPlayOnce = true
+                isPlaySoundOnce = true
+                playBTn.setBackgroundImage(UIImage(named: "playBtnBG"), for: .normal)
+                for i in 0..<multySoundArray.count
+                {
+                    multySoundArray[i].stop()
+                }
             }
         }
 //        if minutes <= 10
