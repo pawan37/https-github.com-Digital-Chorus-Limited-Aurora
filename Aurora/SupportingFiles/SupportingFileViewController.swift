@@ -58,6 +58,21 @@ class supportingfuction: NSObject
     }
     //MARK: Reachable
     
+    //MARK: Check Wifi
+    static  func checkWifiReachability() -> Bool {
+        var reach: Reachability?
+        reach = Reachability.forInternetConnection()
+        reach!.reachableOnWWAN = false
+        if reach!.isReachableViaWiFi()
+        {
+            return true
+        }
+        else
+        {
+            return false
+        }
+    }
+    
   
     
     // MARK: Scale image for Thumbnail

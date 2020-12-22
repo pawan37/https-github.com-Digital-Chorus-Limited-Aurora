@@ -40,6 +40,18 @@ class SettingViewController: UIViewController {
         // Do any additional setup after loading the view.
     }
 
+    @IBAction func downloadSwitch_Action(_ sender: UISwitch)
+    {
+        if sender.isOn == true
+        {
+            UserDefaults.standard.setValue("yes", forKey: "wifiOn")
+        }
+        else
+        {
+            UserDefaults.standard.setValue("no", forKey: "wifiOn")
+        }
+    }
+    
     @IBAction func backBtn_Action(_ sender: Any)
     {
         self.navigationController?.popViewController(animated: true)
@@ -63,6 +75,22 @@ extension SettingViewController : UITableViewDataSource, UITableViewDelegate
         if indexPath.row == 2
         {
             cell = tableView.dequeueReusableCell(withIdentifier: "Setting2")
+            let donloadSwitch = cell.viewWithTag(2) as? UISwitch
+            if UserDefaults.standard.object(forKey: "wifiOn") != nil
+            {
+               if UserDefaults.standard.object(forKey: "wifiOn") as! String == "yes"
+               {
+                donloadSwitch?.isOn = true
+               }
+              else
+               {
+                donloadSwitch?.isOn = false
+               }
+            }
+            else
+            {
+                donloadSwitch?.isOn = true
+            }
         }
         else
         {
@@ -91,8 +119,17 @@ extension SettingViewController : UITableViewDataSource, UITableViewDelegate
             guard let url = URL(string: "https://www.aurorasleepmusic.com/app-about") else { return }
             UIApplication.shared.open(url)
         }
+        else if indexPath.row == 1
+        {
+            let vc = self.storyboard?.instantiateViewController(withIdentifier: "ManageDownloadViewController") as! ManageDownloadViewController
+            self.navigationController?.pushViewController(vc, animated: true)
+        }
+        else if indexPath.row == 0
+        {
+            guard let url = URL(string: "https://www.aurorasleepmusic.com/feedback") else { return }
+            UIApplication.shared.open(url)
+        }
     }
-    
 }
 
 

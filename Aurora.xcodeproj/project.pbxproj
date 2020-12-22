@@ -46,6 +46,7 @@
 		F68624A924F0E7DA00A1A04F /* Comfortaa-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F686249F24F0E7DA00A1A04F /* Comfortaa-Bold.ttf */; };
 		F68624AA24F0E7DA00A1A04F /* Atma-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F68624A024F0E7DA00A1A04F /* Atma-SemiBold.ttf */; };
 		F69C691E24F3A2BD00274626 /* MusicDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F69C691D24F3A2BD00274626 /* MusicDetailViewController.swift */; };
+		F6DCF4C22588FA50009CB3A6 /* ManageDownloadViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6DCF4C12588FA50009CB3A6 /* ManageDownloadViewController.swift */; };
 		F6ECA06D24F4DE0300D98EF8 /* TimerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6ECA06C24F4DE0300D98EF8 /* TimerViewController.swift */; };
 		F6ECA06F24F4F1A300D98EF8 /* SettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F6ECA06E24F4F1A300D98EF8 /* SettingViewController.swift */; };
 /* End PBXBuildFile section */
@@ -108,6 +109,7 @@
 		F686249F24F0E7DA00A1A04F /* Comfortaa-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Comfortaa-Bold.ttf"; sourceTree = "<group>"; };
 		F68624A024F0E7DA00A1A04F /* Atma-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Atma-SemiBold.ttf"; sourceTree = "<group>"; };
 		F69C691D24F3A2BD00274626 /* MusicDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicDetailViewController.swift; sourceTree = "<group>"; };
+		F6DCF4C12588FA50009CB3A6 /* ManageDownloadViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManageDownloadViewController.swift; sourceTree = "<group>"; };
 		F6ECA06C24F4DE0300D98EF8 /* TimerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerViewController.swift; sourceTree = "<group>"; };
 		F6ECA06E24F4F1A300D98EF8 /* SettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -172,6 +174,7 @@
 				F6ECA06E24F4F1A300D98EF8 /* SettingViewController.swift */,
 				F603C36824F8E7D5002A8F16 /* PurchasePopViewController.swift */,
 				F676C57324FCCA6900ACC1B8 /* VideoViewController.swift */,
+				F6DCF4C12588FA50009CB3A6 /* ManageDownloadViewController.swift */,
 				F686247C24F0DEAF00A1A04F /* Main.storyboard */,
 				F686248A24F0E12500A1A04F /* Font */,
 				F686248C24F0E15600A1A04F /* SupportingFiles */,
@@ -380,6 +383,7 @@
 				F69C691E24F3A2BD00274626 /* MusicDetailViewController.swift in Sources */,
 				F686247B24F0DEAF00A1A04F /* ViewController.swift in Sources */,
 				F61A2200250758E600717B72 /* AFHTTPSessionManager.m in Sources */,
+				F6DCF4C22588FA50009CB3A6 /* ManageDownloadViewController.swift in Sources */,
 				F61A21FC250758E600717B72 /* AFURLRequestSerialization.m in Sources */,
 				F61A21FE250758E600717B72 /* AFHTTPRequestOperationManager.m in Sources */,
 				F61052FF250F47C0003D93DC /* DBHelper.swift in Sources */,
@@ -555,7 +559,7 @@
 				SWIFT_OBJC_BRIDGING_HEADER = "Aurora/SupportingFiles/Aurora-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -578,7 +582,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = 05/10_Dis;
 				SWIFT_OBJC_BRIDGING_HEADER = "Aurora/SupportingFiles/Aurora-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};

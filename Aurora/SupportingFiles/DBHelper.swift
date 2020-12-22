@@ -13,7 +13,7 @@ class DBHelper
         tagsTable()
         compositionTable()
         soundTable()
-        
+        downloadTable()
     }
     
     let dbPath: String = "myDb.sqlite"
@@ -109,7 +109,31 @@ class DBHelper
             {
                 print("table could not be created.")
             }
-        } else {
+        }
+        else
+        {
+            print("CREATE TABLE statement could not be prepared.")
+        }
+        sqlite3_finalize(createTableStatement)
+    }
+    
+    func downloadTable()
+    {
+        let createTableString = "CREATE TABLE IF NOT EXISTS download(Id INTEGER, musicID TEXT PRIMARY KEY, musicName TEXT, size TEXT);"
+        var createTableStatement: OpaquePointer? = nil
+        if sqlite3_prepare_v2(db, createTableString, -1, &createTableStatement, nil) == SQLITE_OK
+        {
+            if sqlite3_step(createTableStatement) == SQLITE_DONE
+            {
+                print("table created.")
+            }
+            else
+            {
+                print("table could not be created.")
+            }
+        }
+        else
+        {
             print("CREATE TABLE statement could not be prepared.")
         }
         sqlite3_finalize(createTableStatement)
@@ -182,6 +206,25 @@ class DBHelper
             sqlite3_bind_text(insertStatement, 9, (instrumentVolumeDefault as NSString).utf8String, -1, nil)
             sqlite3_bind_text(insertStatement, 10, (musicId as NSString).utf8String, -1, nil)
             
+            if sqlite3_step(insertStatement) == SQLITE_DONE {
+                print("Successfully inserted row.")
+            } else {
+                print("Could not insert row.")
+            }
+        } else {
+            print("INSERT statement could not be prepared.")
+        }
+        sqlite3_finalize(insertStatement)
+    }
+    
+    func insertDownload(musicId: String, musicName: String, size: String)
+    {
+        let insertStatementString = "INSERT INTO download(musicID, musicName, size) VALUES (?, ?, ?);"
+        var insertStatement: OpaquePointer? = nil
+        if sqlite3_prepare_v2(db, insertStatementString, -1, &insertStatement, nil) == SQLITE_OK {
+            sqlite3_bind_text(insertStatement, 1, (musicId as NSString).utf8String, -1, nil)
+            sqlite3_bind_text(insertStatement, 2, (musicName as NSString).utf8String, -1, nil)
+            sqlite3_bind_text(insertStatement, 3, (musicName as NSString).utf8String, -1, nil)
             if sqlite3_step(insertStatement) == SQLITE_DONE {
                 print("Successfully inserted row.")
             } else {
@@ -413,7 +456,54 @@ class DBHelper
         sqlite3_finalize(queryStatement)
         return compositionArray
     }
-
+    
+    func getdownload() -> NSMutableArray
+    {
+        let queryStatementString = "SELECT * FROM download;"
+        var queryStatement: OpaquePointer? = nil
+        let downloadArray : NSMutableArray = []
+        if sqlite3_prepare_v2(db, queryStatementString, -1, &queryStatement, nil) == SQLITE_OK {
+            while sqlite3_step(queryStatement) == SQLITE_ROW {
+                let id = sqlite3_column_int(queryStatement, 0)
+                let musicId = String(describing: String(cString: sqlite3_column_text(queryStatement, 1)))
+                let musicName = String(describing: String(cString: sqlite3_column_text(queryStatement, 2)))
+                let size = String(describing: String(cString: sqlite3_column_text(queryStatement, 3)))
+                var parameterDict : NSDictionary = [:]
+                parameterDict = ["musicID": musicId, "musicName": musicName, "size": size]
+                downloadArray.add(parameterDict)
+                print("Query Result OF favourite:")
+            }
+        } else
+        {
+            print("SELECT statement could not be prepared")
+        }
+        sqlite3_finalize(queryStatement)
+        return downloadArray
+    }
+    
+    func getdownloadbyId(Id: String) -> NSMutableArray
+    {
+        let queryStatementString = "SELECT * FROM download WHERE musicID = '\(Id);"
+        var queryStatement: OpaquePointer? = nil
+        let downloadArray : NSMutableArray = []
+        if sqlite3_prepare_v2(db, queryStatementString, -1, &queryStatement, nil) == SQLITE_OK {
+            while sqlite3_step(queryStatement) == SQLITE_ROW {
+                let id = sqlite3_column_int(queryStatement, 0)
+                let musicId = String(describing: String(cString: sqlite3_column_text(queryStatement, 1)))
+                let musicName = String(describing: String(cString: sqlite3_column_text(queryStatement, 2)))
+                let size = String(describing: String(cString: sqlite3_column_text(queryStatement, 3)))
+                var parameterDict : NSDictionary = [:]
+                parameterDict = ["musicID": musicId, "musicName": musicName, "size": size]
+                downloadArray.add(parameterDict)
+                print("Query Result OF favourite:")
+            }
+        } else
+        {
+            print("SELECT statement could not be prepared")
+        }
+        sqlite3_finalize(queryStatement)
+        return downloadArray
+    }
     
     func getTagfromLocal() -> NSMutableArray
     {
@@ -455,6 +545,24 @@ class DBHelper
         if sqlite3_prepare_v2(db, deleteStatementStirng, -1, &deleteStatement, nil) == SQLITE_OK {
           //  sqlite3_bind_int(deleteStatement, 1, Int32(id))
             sqlite3_bind_text(deleteStatement, 1, (id as NSString).utf8String, -1, nil)
+            if sqlite3_step(deleteStatement) == SQLITE_DONE {
+                print("Successfully deleted row.")
+            } else {
+                print("Could not delete row.")
+            }
+        } else {
+            print("DELETE statement could not be prepared")
+        }
+        sqlite3_finalize(deleteStatement)
+    }
+    
+    func deleteDownloadbyID(id:String)
+    {
+        let deleteStatementStirng = "DELETE FROM download WHERE musicID = '\(id)';"
+        var deleteStatement: OpaquePointer? = nil
+        if sqlite3_prepare_v2(db, deleteStatementStirng, -1, &deleteStatement, nil) == SQLITE_OK {
+            //  sqlite3_bind_int(deleteStatement, 1, Int32(id))
+            // sqlite3_bind_text(deleteStatement, 1, (id as NSString).utf8String, -1, nil)
             if sqlite3_step(deleteStatement) == SQLITE_DONE {
                 print("Successfully deleted row.")
             } else {
@@ -541,6 +649,24 @@ class DBHelper
     
     func updateSoundByID(createdDate:String, SooundId:String, owner:String, _updatedDate: String, soundAudioURL: String, soundDisplayOrder: String, soundLive: String, SoundName: String, instrumetVolumeDefault: String, musicID: String) {
         let updateStatementString = "UPDATE sound SET createdDate = '\(createdDate)' , soundId = '\(SooundId)' , owner = '\(owner)' , _updatedDate = '\(_updatedDate)' , soundAudioURL = '\(soundAudioURL)' , soundDisplayOrder = '\(soundDisplayOrder)' , soundLive = '\(soundLive)' , soundName = '\(SoundName)' , soundVolumeDefault = '\(instrumetVolumeDefault)' , musicID = '\(musicID)' WHERE musicID = '\(musicID)' AND soundName = '\(SoundName)';"
+        var updateStatement: OpaquePointer?
+        if sqlite3_prepare_v2(db, updateStatementString, -1, &updateStatement, nil) ==
+            SQLITE_OK {
+            //  sqlite3_bind_int(updateStatement, 1, Int32(id))
+            if sqlite3_step(updateStatement) == SQLITE_DONE {
+                print("\nSuccessfully updated row.")
+            } else {
+                print("\nCould not update row.")
+            }
+        } else {
+            print("\nUPDATE statement is not prepared")
+        }
+        sqlite3_finalize(updateStatement)
+    }
+    
+    func updateDownloadByID(musicId: String, musicName: String, size: String)
+    {
+        let updateStatementString = "UPDATE download SET musicID = '\(musicId)' , musicName = '\(musicName)' , size = '\(size)' WHERE musicID = '\(musicId)';"
         var updateStatement: OpaquePointer?
         if sqlite3_prepare_v2(db, updateStatementString, -1, &updateStatement, nil) ==
             SQLITE_OK {

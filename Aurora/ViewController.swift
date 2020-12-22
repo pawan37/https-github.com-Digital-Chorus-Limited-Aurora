@@ -11,14 +11,13 @@ import AVKit
 import Alamofire
 import SQLite3
 import SwiftySound
+import StoreKit
 
 class ViewController: UIViewController {
 
     @IBOutlet weak var collectionView_Ctrl: UICollectionView!
     @IBOutlet weak var tableView_ctrl: UITableView!
     @IBOutlet weak var bgView_Ctrl: UIView!
-    
-    
     
     var songTypeArray : NSMutableArray = []
     let songImagesArray = ["Spirit.png","Whispers.png","Another.png","wp","road"]
@@ -30,7 +29,6 @@ class ViewController: UIViewController {
     var isfromSelection : Bool = true
     var db:DBHelper = DBHelper()
     var favourite:[favourite] = []
-    
     
     override func viewDidLoad()
         
@@ -57,6 +55,7 @@ class ViewController: UIViewController {
         
         if supportingfuction.checkNetworkReachability() == true
         {
+            receiptValidation()
             if UserDefaults.standard.object(forKey: "isOneTime") != nil
             {
                 getsonngListFromLocal()
@@ -66,6 +65,7 @@ class ViewController: UIViewController {
                 getSongList(selectedTags: selectedTags)
             }
             getSongTypeList()
+            getSongPrice()
         }
         else
         {
@@ -73,7 +73,7 @@ class ViewController: UIViewController {
             getsonngListFromLocal()
         }
         
-        
+        NotificationCenter.default.addObserver(self, selector: #selector(self.methodOfReceivedNotification(notification:)), name: Notification.Name("refreshTableView"), object: nil)
         // Do any additional setup after loading the view.
     }
     
@@ -82,6 +82,141 @@ class ViewController: UIViewController {
         selectedTags = "All"
         selectedIndex = 0
         isfromSelection = true
+    }
+    
+    @objc func methodOfReceivedNotification(notification: Notification)
+        
+    {
+        if supportingfuction.checkNetworkReachability() == true
+        {
+            receiptValidation()
+        }
+    }
+    
+    func receiptValidation() {
+        #if DEBUG
+        let verifyReceiptURL = "https://sandbox.itunes.apple.com/verifyReceipt"
+        #else
+        let verifyReceiptURL = "https://buy.itunes.apple.com/verifyReceipt"
+        #endif
+        let receiptFileURL = Bundle.main.appStoreReceiptURL
+        let receiptData = try? Data(contentsOf: receiptFileURL!)
+        let recieptString = receiptData?.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0))
+        if recieptString == nil
+        {
+            UserDefaults.standard.set("no", forKey: "isMusicPurchase")
+            MBProgressHUD.hide(for: self.view, animated: true)
+            return
+        }
+        
+        let jsonDict: [String: AnyObject] = ["receipt-data" : recieptString! as AnyObject, "password": "2b521cf76a884670b496ac4641690d8b" as AnyObject]
+        
+        do {
+            MBProgressHUD.showAdded(to: view, animated: true)
+            let requestData = try JSONSerialization.data(withJSONObject: jsonDict, options: JSONSerialization.WritingOptions.prettyPrinted)
+            let storeURL = URL(string: verifyReceiptURL)!
+            var storeRequest = URLRequest(url: storeURL)
+            storeRequest.httpMethod = "POST"
+            storeRequest.httpBody = requestData
+            let session = URLSession(configuration: URLSessionConfiguration.default)
+            let task = session.dataTask(with: storeRequest, completionHandler: { [weak self] (data, response, error) in
+                
+                do {
+                    if let jsonResponse = try JSONSerialization.jsonObject(with: data!, options: JSONSerialization.ReadingOptions.mutableContainers) as? NSDictionary{
+                        print("Response :",jsonResponse)
+                        
+                        if let date = self?.getExpirationDateFromResponse(jsonResponse) {
+                            print("Subscription expire date",date)
+                            let currentDate = Date()
+                            let formatter = DateFormatter()
+                            formatter.dateFormat = "yyyy-MM-dd"
+                            let firstDate = formatter.date(from: formatter.string(from: date))
+                            let secondDate = formatter.date(from: formatter.string(from: currentDate))
+                            if firstDate?.compare(secondDate!) == .orderedDescending {
+                                print("First Date is greater than second date")
+                                UserDefaults.standard.set("yes", forKey: "isMusicPurchase")
+                            } else if firstDate?.compare(secondDate!) == .orderedSame {
+                                print("Both date are same")
+                                UserDefaults.standard.set("yes", forKey: "isMusicPurchase")
+                            } else if firstDate?.compare(secondDate!) == .orderedAscending {
+                                print("First Date is less than second date")
+                                UserDefaults.standard.set("no", forKey: "isMusicPurchase")
+                            }
+                            DispatchQueue.main.async {
+                                MBProgressHUD.hide(for: self!.view, animated: true)
+                                self?.tableView_ctrl.reloadData()
+                            }
+                        }
+                        DispatchQueue.main.async {
+                            MBProgressHUD.hide(for: self!.view, animated: true)
+                        }
+                    }
+                } catch let parseError {
+                    print(parseError)
+                }
+            })
+            task.resume()
+            
+        } catch let parseError {
+            print(parseError)
+        }
+    }
+    
+    func getExpirationDateFromResponse(_ jsonResponse: NSDictionary) -> Date? {
+        
+        if let receiptInfo: NSArray = jsonResponse["latest_receipt_info"] as? NSArray {
+            
+            let firstObject = receiptInfo.firstObject as! NSDictionary
+            let formatter = DateFormatter()
+            formatter.dateFormat = "yyyy-MM-dd HH:mm:ss VV"
+            
+            if let expiresDate = firstObject["expires_date"] as? String {
+                return formatter.date(from: expiresDate)
+            }
+            
+            return nil
+        }
+        else {
+            return nil
+        }
+    }
+    
+    // Get Song Price
+    func getSongPrice() {
+        //MBProgressHUD.showAdded(to: view, animated: true)
+        var baseUrl: String = ""
+        var songPriceArray: NSMutableArray = []
+        baseUrl = Constant.serverURL + "simplePayment"
+        Alamofire.request(baseUrl, method : .get, parameters: nil, headers: nil)
+            .responseJSON
+            { response in
+                print(response)
+                if String(describing: response.result) == "SUCCESS"
+                {
+                    //MBProgressHUD.hide(for: self.view, animated: true)
+                    if(response.response?.statusCode == 200)
+                    {
+                        let tempArray = (response.result.value! as! NSDictionary).object(forKey: "simplePayment") as? NSArray
+                        songPriceArray = tempArray?.mutableCopy() as! NSMutableArray
+                        if songPriceArray.count >= 1 {
+                            let tempDict = songPriceArray.object(at: 0) as? NSDictionary
+                            if let price = (tempDict?.object(forKey: "valueGdp") as? String) {
+                                print("Music price: \(price)")
+                                UserDefaults.standard.set(price, forKey: "isMusicPrice")
+                            }
+                            if let isMusicDesc = (tempDict?.object(forKey: "description") as? String) {
+                                print("Music desc: \(isMusicDesc)")
+                                UserDefaults.standard.set(isMusicDesc, forKey: "isMusicDesc")
+                            }
+                            
+                        }
+                    }
+                }
+                else {
+                    //MBProgressHUD.hide(for: self.view, animated: true)
+                    supportingfuction.showMessageHudWithMessage("Something went wrong. Please try again." as NSString,delay: 2.0)
+                }
+        }
     }
     
     func getsonngListFromLocal()
@@ -318,7 +453,19 @@ class ViewController: UIViewController {
         {
             if tempDict?.object(forKey: "musicPremium") != nil && tempDict?.object(forKey: "musicPremium") as! String == "1"
             {
-                
+                if let isPurchase = UserDefaults.standard.object(forKey: "isMusicPurchase"), isPurchase as! String == "yes"
+                {
+                    if selectedArray.object(at: selectedIndexRow) as? String == "yes"
+                    {
+                        selectedArray.replaceObject(at: selectedIndexRow, with: "no")
+                        db.insert(songId: (tempDict?.object(forKey: "musicID") as? String)!, updateStatus: "1")
+                    }
+                    else
+                    {
+                        selectedArray.replaceObject(at: selectedIndexRow, with: "yes")
+                        self.db.deleteByID(id: (tempDict?.object(forKey: "musicID") as? String)!)
+                    }
+                }
             }
             else
             {
@@ -343,7 +490,19 @@ class ViewController: UIViewController {
         {
             if tempDict?.object(forKey: "musicPremium") != nil && tempDict?.object(forKey: "musicPremium") as! Int == 1
             {
-                
+                if let isPurchase = UserDefaults.standard.object(forKey: "isMusicPurchase"), isPurchase as! String == "yes"
+                {
+                    if selectedArray.object(at: selectedIndexRow) as? String == "yes"
+                    {
+                        selectedArray.replaceObject(at: selectedIndexRow, with: "no")
+                        db.insert(songId: (tempDict?.object(forKey: "musicID") as? String)!, updateStatus: "1")
+                    }
+                    else
+                    {
+                        selectedArray.replaceObject(at: selectedIndexRow, with: "yes")
+                        self.db.deleteByID(id: (tempDict?.object(forKey: "musicID") as? String)!)
+                    }
+                }
             }
             else
             {
@@ -622,8 +781,20 @@ extension ViewController : UITableViewDataSource, UITableViewDelegate
             {
                 if tempDict?.object(forKey: "musicPremium") as? String == "1"
                 {
-                    favBtn?.isHidden = false
-                    favBtn?.setImage(UIImage(named: "padlock"), for: .normal)
+                    if let isPurchase = UserDefaults.standard.object(forKey: "isMusicPurchase"), isPurchase as! String == "yes" {
+                        if selectedArray.object(at: indexPath.row) as? String == "yes"
+                        {
+                            favBtn?.setImage(UIImage(named: "heart-white 2"), for: .normal)
+                        }
+                        else
+                        {
+                            favBtn?.setImage(UIImage(named: "heart-Pink-2"), for: .normal)
+                        }
+                    } else {
+                        favBtn?.isHidden = false
+                        favBtn?.setImage(UIImage(named: "padlock"), for: .normal)
+                        
+                    }
                 }
                 else
                 {
@@ -642,8 +813,19 @@ extension ViewController : UITableViewDataSource, UITableViewDelegate
             {
                 if tempDict?.object(forKey: "musicPremium") as? Int == 1
                 {
-                    favBtn?.isHidden = false
-                    favBtn?.setImage(UIImage(named: "padlock"), for: .normal)
+                    if let isPurchase = UserDefaults.standard.object(forKey: "isMusicPurchase"), isPurchase as! String == "yes" {
+                        if selectedArray.object(at: indexPath.row) as? String == "yes"
+                        {
+                            favBtn?.setImage(UIImage(named: "heart-white 2"), for: .normal)
+                        }
+                        else
+                        {
+                            favBtn?.setImage(UIImage(named: "heart-Pink-2"), for: .normal)
+                        }
+                    } else {
+                        favBtn?.isHidden = false
+                        favBtn?.setImage(UIImage(named: "padlock"), for: .normal)
+                    }
                 }
                 else
                 {
@@ -688,10 +870,17 @@ extension ViewController : UITableViewDataSource, UITableViewDelegate
             {
                 if tempDict?.object(forKey: "musicPremium") as? String == "1"
                 {
-                    let popOverVC = self.storyboard?.instantiateViewController(withIdentifier: "PurchasePopViewController")  as! PurchasePopViewController
-                    popOverVC.view.frame = self.view.frame
-                    self.view.addSubview(popOverVC.view)
-                    self.addChild(popOverVC)
+                    if let isPurchase = UserDefaults.standard.object(forKey: "isMusicPurchase"), isPurchase as! String == "yes" {
+                        let vc = self.storyboard?.instantiateViewController(withIdentifier: "MusicDetailViewController") as! MusicDetailViewController
+                        vc.musicDetailDict = tempDict?.mutableCopy() as! NSMutableDictionary
+                        self.navigationController?.pushViewController(vc, animated: true)
+                        
+                    } else {
+                        let popOverVC = self.storyboard?.instantiateViewController(withIdentifier: "PurchasePopViewController")  as! PurchasePopViewController
+                        popOverVC.view.frame = self.view.frame
+                        self.view.addSubview(popOverVC.view)
+                        self.addChild(popOverVC)
+                    }
                 }
                 else
                 {
@@ -704,10 +893,17 @@ extension ViewController : UITableViewDataSource, UITableViewDelegate
             {
                 if tempDict?.object(forKey: "musicPremium") as? Int == 1
                 {
-                    let popOverVC = self.storyboard?.instantiateViewController(withIdentifier: "PurchasePopViewController")  as! PurchasePopViewController
-                    popOverVC.view.frame = self.view.frame
-                    self.view.addSubview(popOverVC.view)
-                    self.addChild(popOverVC)
+                    if let isPurchase = UserDefaults.standard.object(forKey: "isMusicPurchase"), isPurchase as! String == "yes" {
+                        let vc = self.storyboard?.instantiateViewController(withIdentifier: "MusicDetailViewController") as! MusicDetailViewController
+                        vc.musicDetailDict = tempDict?.mutableCopy() as! NSMutableDictionary
+                        self.navigationController?.pushViewController(vc, animated: true)
+                        
+                    } else {
+                        let popOverVC = self.storyboard?.instantiateViewController(withIdentifier: "PurchasePopViewController")  as! PurchasePopViewController
+                        popOverVC.view.frame = self.view.frame
+                        self.view.addSubview(popOverVC.view)
+                        self.addChild(popOverVC)
+                    }
                 }
                 else
                 {

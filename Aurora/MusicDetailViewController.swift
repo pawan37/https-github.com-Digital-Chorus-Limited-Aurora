@@ -64,13 +64,15 @@ class MusicDetailViewController: UIViewController, UITableViewDelegate, UITableV
     var isFavourite : Bool = true
     var totalSecond = Int()
     var timer : Timer?
+    var totalSize : Float = 0.0
+    var iscalculateSize : Bool = true
     
     @IBOutlet weak var timer_Lbl: UILabel!
     @IBOutlet weak var infinity_Imageview: UIImageView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+        // Do any additional setup after loading   view.
         print(musicDetailDict)
         if musicDetailDict.object(forKey: "largeImageURL") != nil
         {
@@ -147,39 +149,7 @@ class MusicDetailViewController: UIViewController, UITableViewDelegate, UITableV
         }
         
         getMusicComposition()
-//        if supportingfuction.checkNetworkReachability() == true
-//        {
-//
-//        }
-//        else
-//        {
-//            let tempArray = self.db.getCompositionbyMusicId(Id: (self.musicDetailDict.object(forKey: "musicID") as! String))
-//            compositionMusicArray = tempArray
-//            tempCompositionArray = tempArray
-//            localCompositionArray = tempArray
-//            print(localCompositionArray)
-//            print(compositionMusicArray)
-//            print(tempCompositionArray)
-//            let tempArray2 = self.db.getSoundbyMusicId(Id: (self.musicDetailDict.object(forKey: "musicID") as! String))
-//            print(localSoundArray)
-//            localSoundArray = tempArray2
-//            tempSoundArray = tempArray2
-//            print(tempSoundArray)
-//            for i in 0..<tempArray2.count
-//            {
-//                let tempDict = tempArray2.object(at: i) as? NSDictionary
-//                self.compositionMusicArray.add(tempDict!)
-//                self.localCompositionArray.add(tempDict!)
-//            }
-//            print(compositionMusicArray.count)
-//            print(localCompositionArray.count)
-//            filterVolumeArray = compositionMusicArray
-//            tempCompositionArray = self.db.getCompositionbyMusicId(Id: (self.musicDetailDict.object(forKey: "musicID") as! String))
-//            print(tempCompositionArray.count)
-//            print(tempSoundArray.count)
-//            self.optionTableView.reloadData()
-//        }
-        
+
         if let emitter = NSKeyedUnarchiver.unarchiveObject(withFile: Bundle.main.path(forResource: "Spark", ofType: "sks")!) as? SKEmitterNode {
             rectangleBgView.layer.borderWidth = 1.0
             rectangleBgView.layer.borderColor = UIColor.lightGray.cgColor
@@ -190,6 +160,8 @@ class MusicDetailViewController: UIViewController, UITableViewDelegate, UITableV
     
     override func viewWillAppear(_ animated: Bool)
     {
+        if isPlay == true
+        {
         if UserDefaults.standard.object(forKey: "timerOn") != nil
         {
             if UserDefaults.standard.object(forKey: "timerOn") as! String == "yes"
@@ -199,7 +171,7 @@ class MusicDetailViewController: UIViewController, UITableViewDelegate, UITableV
                 if UserDefaults.standard.object(forKey: "timerValues") != nil
                 {
                     let timerValue = UserDefaults.standard.object(forKey: "timerValues")  as! Int
-                    self.timer_Lbl.text = String(timerValue) + ": 00"
+                    self.timer_Lbl.text = String(timerValue) + ":00"
                     totalSecond = timerValue * 60
                     print(totalSecond)
                 }
@@ -217,18 +189,19 @@ class MusicDetailViewController: UIViewController, UITableViewDelegate, UITableV
             if UserDefaults.standard.object(forKey: "timerValues") != nil
             {
                 let timerValue = UserDefaults.standard.object(forKey: "timerValues")  as! Int
-                self.timer_Lbl.text = String(timerValue) + ": 00"
+                self.timer_Lbl.text = String(timerValue) + ":00"
                 totalSecond = timerValue * 60
                 print(totalSecond)
             }
             else
             {
-                UserDefaults.standard.set(60, forKey: "timerValues")
+                UserDefaults.standard.set(30, forKey: "timerValues")
                 let timerValue = UserDefaults.standard.object(forKey: "timerValues")  as! Int
-                self.timer_Lbl.text = String(timerValue) + ": 00"
+                self.timer_Lbl.text = String(timerValue) + ":00"
                 totalSecond = timerValue * 60
                 print(totalSecond)
             }
+        }
         }
     }
     
@@ -393,22 +366,7 @@ class MusicDetailViewController: UIViewController, UITableViewDelegate, UITableV
                             }, completion: { _ in })
         }
        
-//        if sender.isSelected == true
-//        {
-//            UIView.transition(with: self.view!, duration: 0.8, options: .transitionCrossDissolve, animations: {() -> Void in
-//                self.descriptionView_Ctrl.isHidden = false
-//                self.topViewCnst.constant = 255
-//                self.scrollView_Ctrl.isUserInteractionEnabled = false
-//            }, completion: { _ in })
-//        }
-//        else
-//        {
-//            UIView.transition(with: self.view!, duration: 0.8, options: .transitionCrossDissolve, animations: {() -> Void in
-//                self.descriptionView_Ctrl.isHidden = true
-//                self.topViewCnst.constant = 20
-//                self.scrollView_Ctrl.isUserInteractionEnabled = true
-//            }, completion: { _ in })
-//        }
+
     }
     
     @IBAction func resetBtn_Action(_ sender: Any)
@@ -417,7 +375,7 @@ class MusicDetailViewController: UIViewController, UITableViewDelegate, UITableV
         {
             if isPlay == false
             {
-                supportingfuction.showMessageHudWithMessage("Please Stop Music to Reset all Volume." as NSString,delay: 2.0)
+                supportingfuction.showMessageHudWithMessage("Stop music to restore default volumes." as NSString,delay: 2.0)
                 return
             }
             else
@@ -472,14 +430,26 @@ class MusicDetailViewController: UIViewController, UITableViewDelegate, UITableV
         else
        {
         isFavourite = true
-         self.db.deleteByID(id: (musicDetailDict.object(forKey: "musicID") as? String)!)
-         heartIcon_Btn?.setImage(UIImage(named: "heart-white 2"), for: .normal)
-        
-       }
+        self.db.deleteByID(id: (musicDetailDict.object(forKey: "musicID") as? String)!)
+        heartIcon_Btn?.setImage(UIImage(named: "heart-white 2"), for: .normal)
+        }
     }
     
     @IBAction func playBtn_Action(_ sender: UIButton)
     {
+        if supportingfuction.checkNetworkReachability() == false
+        {
+            let downloadloaclArray = self.db.getdownloadbyId(Id: ((musicDetailDict.object(forKey: "musicID") as? String)!))
+            if downloadloaclArray.count == 0
+            {
+                let alert = UIAlertController(title: "You are not online.", message: "Go to settings (icon top right) to allow download without wi-fi. Please be aware this may use your data allowance.", preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "OK", style: .default, handler: {(action:UIAlertAction!) in
+                }))
+                self.present(alert, animated: true, completion: nil)
+                return
+            }
+        }
+        
         downloadedUrlArray = []
         volumeArray = []
         multySound = nil
@@ -487,6 +457,7 @@ class MusicDetailViewController: UIViewController, UITableViewDelegate, UITableV
         var url : URL!
         if isPlay == true
         {
+            self.db.insertDownload(musicId: (musicDetailDict.object(forKey: "musicID") as? String)!, musicName: (musicDetailDict.object(forKey: "musicName") as? String)!, size: "0")
            // startTimer()
             isPlay = false
             rectangleBgView.isHidden = false
@@ -551,67 +522,7 @@ class MusicDetailViewController: UIViewController, UITableViewDelegate, UITableV
                                 {
                                     self.isPlayOnce = false
                                     self.playSoundInstrument()
-//                                    self.rectangleBgView.isHidden = true
-//                                    self.rectangleBgView.stopAnimating()
-                                   // self.multySound = nil
-                                  //  self.multySoundArray = []
-//                                    for i in 0..<self.downloadedUrlArray.count
-//                                    {
-//                                        if i < self.tempCompositionArray.count
-//                                        {
-//                                            self.multySound = Sound(url: self.downloadedUrlArray.object(at: i) as! URL)
-//                                            self.multySoundArray.append(self.multySound!)
-//                                        }
-////                                        else
-////                                        {
-////                                            self.soundMultySound = Sound(url: self.downloadedUrlArray.object(at: i) as! URL)
-////                                            self.SoundmultySoundArray.append(self.soundMultySound!)
-////                                        }
-//                                    }
-//                                    print(self.downloadedUrlArray)
-//                                    DispatchQueue.global(qos: .background).async
-//                                    {
-//                                            print(self.multySoundArray)
-//                                            for j in 0..<self.multySoundArray.count
-//                                            {
-//                                                //  DispatchQueue.main.async
-//                                              //  {
-//                                                self.multySoundArray[j].play(numberOfLoops: -1, completion: nil)
-//                                                    let tempVolume = self.volumeArray.object(at: j) as! Int
-//                                                    let convertValue = CGFloat(tempVolume) / 100
-//                                                    print(convertValue)
-//
-//                                                    if !(convertValue == 0.0)
-//                                                    {
-//                                                        self.multySoundArray[j].volume = Float(convertValue)
-//                                                    }
-//                                                    else
-//                                                    {
-//                                                        self.multySoundArray[j].volume = 0.0
-//                                                    }
-//                                             //   }
-//                                            }
-//
-////                                        for k in 0..<self.SoundmultySoundArray.count
-////                                        {
-////                                          // DispatchQueue.main.async
-////                                           // {
-////                                                self.SoundmultySoundArray[k].play(numberOfLoops: -1, completion: nil)
-////                                                self.SoundmultySoundArray[k].volume = 0.0
-////                                           // }
-////                                        }
-//                                    }
-//
-//                                    let audioSession = AVAudioSession.sharedInstance()
-//                                    do
-//                                    {
-//                                        try audioSession.setCategory(AVAudioSession.Category.playback)
-//                                    }
-//                                    catch
-//                                    {
-//                                        fatalError("playback failed")
-//                                    }
-//                                    self.playBTn.isUserInteractionEnabled = true
+
                                 }
                             }
                     }
@@ -622,9 +533,13 @@ class MusicDetailViewController: UIViewController, UITableViewDelegate, UITableV
         else
         {
             timer?.invalidate()
+            let timerValue = UserDefaults.standard.object(forKey: "timerValues")  as! Int
+            self.timer_Lbl.text = String(timerValue) + ":00"
             isPlay = true
             isPlayOnce = true
             isPlaySoundOnce = true
+            iscalculateSize = true
+            totalSize = 0.0
             playBTn.setBackgroundImage(UIImage(named: "playBtnBG"), for: .normal)
             for i in 0..<multySoundArray.count
             {
@@ -638,8 +553,6 @@ class MusicDetailViewController: UIViewController, UITableViewDelegate, UITableV
         timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(countdown), userInfo: nil, repeats: true)
     }
     
-   
-    
     @objc func countdown()
     {
         var minutes: Int
@@ -648,276 +561,142 @@ class MusicDetailViewController: UIViewController, UITableViewDelegate, UITableV
         let timerOn = UserDefaults.standard.object(forKey: "timerValues") as! Int
         minutes = (totalSecond / 60)
         seconds = (totalSecond % 3600) % 60
-        if timerOn > 10 || timerOn < 30
+        if timerOn >= 10 || timerOn <= 180
         {
-            if minutes == 12 && seconds == 00
+            if UserDefaults.standard.object(forKey: "faderOn") != nil
             {
-                for i in 0..<multySoundArray.count
+                if UserDefaults.standard.object(forKey: "faderOn") as! String == "yes"
                 {
-                    let volume = multySoundArray[i].volume
-                    if !(volume == 0.0)
+                    if minutes == 5 && seconds == 00
                     {
-                        self.multySoundArray[i].volume = volume - 0.2
-                        print(self.multySoundArray[i].volume)
+                        for i in 0..<multySoundArray.count
+                        {
+                            let volume = multySoundArray[i].volume
+                            if volume > 0.0 && volume >= 0.2
+                            {
+                                self.multySoundArray[i].volume = volume - 0.2
+                                print(self.multySoundArray[i].volume)
+                            }
+                            else if volume > 0.0 && volume >= 0.1
+                            {
+                                self.multySoundArray[i].volume = volume - 0.2
+                                print(self.multySoundArray[i].volume)
+                            }
+                            print(volume)
+                        }
                     }
-                    print(volume)
+                    else if minutes == 4 && seconds == 00
+                    {
+                        for i in 0..<multySoundArray.count
+                        {
+                            let volume = multySoundArray[i].volume
+                            if volume > 0.0 && volume >= 0.1
+                            {
+                                self.multySoundArray[i].volume = volume - 0.1
+                                print(self.multySoundArray[i].volume)
+                            }
+                            print(volume)
+                        }
+                    }
+                    else if minutes == 3 && seconds == 00
+                    {
+                        for i in 0..<multySoundArray.count
+                        {
+                            let volume = multySoundArray[i].volume
+                            if volume > 0.0 && volume >= 0.1
+                            {
+                                self.multySoundArray[i].volume = volume - 0.1
+                                print(self.multySoundArray[i].volume)
+                            }
+                            print(volume)
+                        }
+                    }
+                    else if minutes == 2 && seconds == 00
+                    {
+                        for i in 0..<multySoundArray.count
+                        {
+                            let volume = multySoundArray[i].volume
+                            if volume > 0.0 && volume >= 0.1
+                            {
+                                self.multySoundArray[i].volume = volume - 0.05
+                                print(self.multySoundArray[i].volume)
+                            }
+                            print(volume)
+                        }
+                    }
+                    else if minutes == 1 && seconds == 00
+                    {
+                        for i in 0..<multySoundArray.count
+                        {
+                            let volume = multySoundArray[i].volume
+                            if volume > 0.0 && volume >= 0.15
+                            {
+                                self.multySoundArray[i].volume = volume - 0.05
+                                print(self.multySoundArray[i].volume)
+                            }
+                            print(volume)
+                        }
+                    }
+                    else if minutes == 0 && seconds == 00
+                    {
+                        timer?.invalidate()
+                        isPlay = true
+                        isPlayOnce = true
+                        isPlaySoundOnce = true
+                        playBTn.setBackgroundImage(UIImage(named: "playBtnBG"), for: .normal)
+                        for i in 0..<multySoundArray.count
+                        {
+                            multySoundArray[i].stop()
+                        }
+                    }
+                }
+                else
+                {
+                    if minutes == 0 && seconds == 00
+                    {
+                        timer?.invalidate()
+                        isPlay = true
+                        isPlayOnce = true
+                        isPlaySoundOnce = true
+                        playBTn.setBackgroundImage(UIImage(named: "playBtnBG"), for: .normal)
+                        for i in 0..<multySoundArray.count
+                        {
+                            multySoundArray[i].stop()
+                        }
+                    }
                 }
             }
-            if minutes == 8 && seconds == 00
+            else
             {
-                for i in 0..<multySoundArray.count
+                if minutes == 0 && seconds == 00
                 {
-                    let volume = multySoundArray[i].volume
-                    if !(volume == 0.0)
+                    timer?.invalidate()
+                    isPlay = true
+                    isPlayOnce = true
+                    isPlaySoundOnce = true
+                    playBTn.setBackgroundImage(UIImage(named: "playBtnBG"), for: .normal)
+                    for i in 0..<multySoundArray.count
                     {
-                        self.multySoundArray[i].volume = volume - 0.2
-                        print(self.multySoundArray[i].volume)
+                        multySoundArray[i].stop()
                     }
-                    print(volume)
-                }
-            }
-            else if minutes == 5 && seconds == 00
-            {
-                for i in 0..<multySoundArray.count
-                {
-                    let volume = multySoundArray[i].volume
-                    if !(volume == 0.0)
-                    {
-                        self.multySoundArray[i].volume = volume - 0.1
-                        print(self.multySoundArray[i].volume)
-                    }
-                    print(volume)
-                }
-            }
-            else if minutes == 0 && seconds == 00
-            {
-                timer?.invalidate()
-                isPlay = true
-                isPlayOnce = true
-                isPlaySoundOnce = true
-                playBTn.setBackgroundImage(UIImage(named: "playBtnBG"), for: .normal)
-                for i in 0..<multySoundArray.count
-                {
-                    multySoundArray[i].stop()
                 }
             }
         }
-        else if timerOn > 30 || timerOn < 60
+        
+        if minutes == 0 && seconds == 00
         {
-            if minutes == 23 && seconds == 00
-            {
-                for i in 0..<multySoundArray.count
-                {
-                    let volume = multySoundArray[i].volume
-                    if !(volume == 0.0)
-                    {
-                        self.multySoundArray[i].volume = volume - 0.2
-                        print(self.multySoundArray[i].volume)
-                    }
-                    print(volume)
-                }
-            }
-            else if minutes == 15 && seconds == 00
-            {
-                for i in 0..<multySoundArray.count
-                {
-                    let volume = multySoundArray[i].volume
-                    if !(volume == 0.0)
-                    {
-                        self.multySoundArray[i].volume = volume - 0.2
-                        print(self.multySoundArray[i].volume)
-                    }
-                    print(volume)
-                }
-            }
-            else if minutes == 10 && seconds == 00
-            {
-                for i in 0..<multySoundArray.count
-                {
-                    let volume = multySoundArray[i].volume
-                    if !(volume == 0.0)
-                    {
-                        self.multySoundArray[i].volume = volume - 0.1
-                        print(self.multySoundArray[i].volume)
-                    }
-                    print(volume)
-                }
-            }
-            else if minutes == 0 && seconds == 00
-            {
-                timer?.invalidate()
-                isPlay = true
-                isPlayOnce = true
-                isPlaySoundOnce = true
-                playBTn.setBackgroundImage(UIImage(named: "playBtnBG"), for: .normal)
-                for i in 0..<multySoundArray.count
-                {
-                    multySoundArray[i].stop()
-                }
-            }
+            let timerValue = UserDefaults.standard.object(forKey: "timerValues")  as! Int
+            self.timer_Lbl.text = String(timerValue) + ":00"
         }
-        else if timerOn > 60 || timerOn < 120
+        else
         {
-            if minutes == 46 && seconds == 00
-            {
-                for i in 0..<multySoundArray.count
-                {
-                    let volume = multySoundArray[i].volume
-                    if !(volume == 0.0)
-                    {
-                        self.multySoundArray[i].volume = volume - 0.2
-                        print(self.multySoundArray[i].volume)
-                    }
-                    print(volume)
-                }
-            }
-            else if minutes == 35 && seconds == 00
-            {
-                for i in 0..<multySoundArray.count
-                {
-                    let volume = multySoundArray[i].volume
-                    if !(volume == 0.0)
-                    {
-                        self.multySoundArray[i].volume = volume - 0.2
-                        print(self.multySoundArray[i].volume)
-                    }
-                    print(volume)
-                }
-            }
-            else if minutes == 25 && seconds == 00
-            {
-                for i in 0..<multySoundArray.count
-                {
-                    let volume = multySoundArray[i].volume
-                    if !(volume == 0.0)
-                    {
-                        self.multySoundArray[i].volume = volume - 0.1
-                        print(self.multySoundArray[i].volume)
-                    }
-                    print(volume)
-                }
-            }
-            else if minutes == 10 && seconds == 00
-            {
-                for i in 0..<multySoundArray.count
-                {
-                    let volume = multySoundArray[i].volume
-                    if !(volume == 0.0)
-                    {
-                        self.multySoundArray[i].volume = volume - 0.1
-                        print(self.multySoundArray[i].volume)
-                    }
-                    print(volume)
-                }
-            }
-            else if minutes == 0 && seconds == 00
-            {
-                timer?.invalidate()
-                isPlay = true
-                isPlayOnce = true
-                isPlaySoundOnce = true
-                playBTn.setBackgroundImage(UIImage(named: "playBtnBG"), for: .normal)
-                for i in 0..<multySoundArray.count
-                {
-                    multySoundArray[i].stop()
-                }
-            }
+            timer_Lbl.text = String(format: "%02d:%02d", minutes, seconds)
         }
-        else if timerOn > 120 || timerOn < 180
-        {
-            if minutes == 69 && seconds == 00
-            {
-                for i in 0..<multySoundArray.count
-                {
-                    let volume = multySoundArray[i].volume
-                    if !(volume == 0.0)
-                    {
-                        self.multySoundArray[i].volume = volume - 0.2
-                        print(self.multySoundArray[i].volume)
-                    }
-                    print(volume)
-                }
-            }
-            if minutes == 60 && seconds == 00
-            {
-                for i in 0..<multySoundArray.count
-                {
-                    let volume = multySoundArray[i].volume
-                    if !(volume == 0.0)
-                    {
-                        self.multySoundArray[i].volume = volume - 0.2
-                        print(self.multySoundArray[i].volume)
-                    }
-                    print(volume)
-                }
-            }
-            else if minutes == 55 && seconds == 00
-            {
-                for i in 0..<multySoundArray.count
-                {
-                    let volume = multySoundArray[i].volume
-                    if !(volume == 0.0)
-                    {
-                        self.multySoundArray[i].volume = volume - 0.2
-                        print(self.multySoundArray[i].volume)
-                    }
-                    print(volume)
-                }
-            }
-            else if minutes == 25 && seconds == 00
-            {
-                for i in 0..<multySoundArray.count
-                {
-                    let volume = multySoundArray[i].volume
-                    if !(volume == 0.0)
-                    {
-                        self.multySoundArray[i].volume = volume - 0.1
-                        print(self.multySoundArray[i].volume)
-                    }
-                    print(volume)
-                }
-            }
-            else if minutes == 10 && seconds == 00
-            {
-                for i in 0..<multySoundArray.count
-                {
-                    let volume = multySoundArray[i].volume
-                    if !(volume == 0.0)
-                    {
-                        self.multySoundArray[i].volume = volume - 0.1
-                        print(self.multySoundArray[i].volume)
-                    }
-                    print(volume)
-                }
-            }
-            else if minutes == 0 && seconds == 00
-            {
-                timer?.invalidate()
-                isPlay = true
-                isPlayOnce = true
-                isPlaySoundOnce = true
-                playBTn.setBackgroundImage(UIImage(named: "playBtnBG"), for: .normal)
-                for i in 0..<multySoundArray.count
-                {
-                    multySoundArray[i].stop()
-                }
-            }
-        }
-//        if minutes <= 10
-//        {
-//            for i in 0..<multySoundArray.count
-//            {
-//                //multySoundArray[i].volume = 0.01
-//                multySoundArray[i].volume = multySoundArray[i].volume - 0.1
-//                print(multySoundArray[i].volume)
-//              //  multySoundArray[i]
-//            }
-//        }
-        timer_Lbl.text = String(format: "%02d:%02d", minutes, seconds)
     }
     
     func playSoundInstrument()
     {
+        iscalculateSize = false
         downloadedUrlArray = []
         var url : URL!
        for i in 0..<compositionMusicArray.count
@@ -992,6 +771,21 @@ class MusicDetailViewController: UIViewController, UITableViewDelegate, UITableV
         }
     }
     
+    func sizePerMB(url: URL?) -> Double {
+        guard let filePath = url?.path else {
+            return 0.0
+        }
+        do {
+            let attribute = try FileManager.default.attributesOfItem(atPath: filePath)
+            if let size = attribute[FileAttributeKey.size] as? NSNumber {
+                return size.doubleValue / 1000000.0
+            }
+        } catch {
+            print("Error: \(error)")
+        }
+        return 0.0
+    }
+    
     func loadFileAsync(url: URL, completion: @escaping (String?, Error?) -> Void)
     {
         let documentsUrl =  FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
@@ -1001,10 +795,74 @@ class MusicDetailViewController: UIViewController, UITableViewDelegate, UITableV
         if FileManager().fileExists(atPath: destinationUrl.path)
         {
           //  print("File already exists [\(destinationUrl.path)]")
+            if iscalculateSize == false
+            {
+                let size = sizePerMB(url: destinationUrl)
+                totalSize = totalSize + Float(size)
+                let twoDecimalPlaces = String(format: "%.2f", totalSize)
+                print(twoDecimalPlaces)
+                self.db.updateDownloadByID(musicId: (musicDetailDict.object(forKey: "musicID") as? String)!, musicName: (musicDetailDict.object(forKey: "musicName") as? String)!, size: twoDecimalPlaces)
+            }
             completion(destinationUrl.path, nil)
         }
         else
         {
+            if UserDefaults.standard.object(forKey: "wifiOn") != nil
+            {
+                if UserDefaults.standard.object(forKey: "wifiOn") as? String == "yes"
+                {
+                    if supportingfuction.checkWifiReachability() == true
+                    {
+                        print("Connected via WIFI")
+                    }
+                    else
+                    {
+                       supportingfuction.showMessageHudWithMessage("Wi-fi required to download music. Go to settings." as NSString,delay: 2.0)
+                        self.rectangleBgView.isHidden = true
+                        self.rectangleBgView.stopAnimating()
+                        self.isPlay = true
+                        playBTn.setBackgroundImage(UIImage(named: "playBtnBG"), for: .normal)
+                        self.playBTn.isUserInteractionEnabled = true
+                        return
+                    }
+                }
+                else
+                {
+                    if supportingfuction.checkWifiReachability() == true
+                    {
+                        print("Connected via WIFI")
+                        let alert = UIAlertController(title: "Wi-fi not detected.", message: "Go to settings (icon top right) to allow download without wi-fi. Please be aware this may use your data allowance.", preferredStyle: .alert)
+                        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: {(action:UIAlertAction!) in
+                        }))
+                        self.present(alert, animated: true, completion: nil)
+                       // supportingfuction.showMessageHudWithMessage("You are connected with WIFI. Please change your connectivity from app Setting" as NSString,delay: 2.0)
+                        self.rectangleBgView.isHidden = true
+                        self.rectangleBgView.stopAnimating()
+                        self.isPlay = true
+                        playBTn.setBackgroundImage(UIImage(named: "playBtnBG"), for: .normal)
+                        self.playBTn.isUserInteractionEnabled = true
+                        return
+                    }
+                }
+            }
+            else
+            {
+                if supportingfuction.checkWifiReachability() == true
+                {
+                    print("Connected via WIFI")
+                }
+                else
+                {
+                    supportingfuction.showMessageHudWithMessage("Wi-fi required to download music. Go to settings." as NSString,delay: 2.0)
+                    self.rectangleBgView.isHidden = true
+                    self.rectangleBgView.stopAnimating()
+                    self.isPlay = true
+                    playBTn.setBackgroundImage(UIImage(named: "playBtnBG"), for: .normal)
+                    self.playBTn.isUserInteractionEnabled = true
+                    return
+                }
+            }
+            
            // MBProgressHUD.showAdded(to: view, animated: true)
             let session = URLSession(configuration: URLSessionConfiguration.default, delegate: nil, delegateQueue: nil)
             var request = URLRequest(url: url)
@@ -1168,52 +1026,6 @@ class MusicDetailViewController: UIViewController, UITableViewDelegate, UITableV
                                         }
                                         self.localCompositionArray = self.db.getCompositionbyMusicId(Id: (self.musicDetailDict.object(forKey: "musicID") as! String))
                                         
-                                        //                                        for k in 0..<self.tempCompositionArray.count
-                                        //                                        {
-                                        //                                            let temponlineArray = self.tempCompositionArray.object(at: k) as! NSDictionary
-                                        //                                            let tempOfflineArray = self.localCompositionArray.object(at: k) as! NSDictionary
-                                        //                                            self.db.updateByID(createdDate: temponlineArray.object(forKey: "_createdDate") as! String, compositionId: temponlineArray.object(forKey: "_id") as! String, owner: temponlineArray.object(forKey: "_owner") as! String, _updatedDate: temponlineArray.object(forKey: "_updatedDate") as! String, instrumentAudioURL: temponlineArray.object(forKey: "instrumentAudioURL") as! String, instrumentDisplayOrder: String(temponlineArray.object(forKey: "instrumentDisplayOrder") as! Int), instrumentLive: String(temponlineArray.object(forKey: "instrumentLive") as! Int), instrumentName: temponlineArray.object(forKey: "instrumentName") as! String, instrumentVolumeDefault: tempOfflineArray.object(forKey: "instrumentVolumeDefault") as! String, musicID: temponlineArray.object(forKey: "musicID") as! String)
-                                        //                                        }
-                                        
-                                        //                                        self.localCompositionArray = self.db.getCompositionbyMusicId(Id: (self.musicDetailDict.object(forKey: "musicID") as! String))
-                                  //  }
-                                //    else
-//                                    {
-//                                        let removeObjectArray = self.localCompositionArray.mutableCopy() as! NSMutableArray
-//                                        for l in 0..<self.tempCompositionArray.count
-//                                        {
-//                                            let onlineDict = self.tempCompositionArray.object(at: l) as! NSDictionary
-//                                            for m in 0..<self.localCompositionArray.count
-//                                            {
-//                                                print(self.localCompositionArray)
-//                                                let offlineDict = self.localCompositionArray.object(at: m) as! NSDictionary
-//                                                if onlineDict.object(forKey: "instrumentName") as! String == offlineDict.object(forKey: "instrumentName") as! String
-//                                                {
-//                                                    removeObjectArray.replaceObject(at: l, with: "isDeleted")
-//                                                    print(removeObjectArray)
-//                                                }
-//                                            }
-//                                        }
-//                                        print(removeObjectArray)
-//                                        for t in 0..<removeObjectArray.count
-//                                        {
-//                                            if !(removeObjectArray.object(at: t) is String)
-//                                            {
-//                                                let tempDict = removeObjectArray.object(at: t) as! NSDictionary
-//                                                self.db.deleteComposition(Id: tempDict.object(forKey: "musicID") as! String, name: tempDict.object(forKey: "instrumentName") as! String)
-//                                            }
-//
-//                                        }
-//                                        self.localCompositionArray = self.db.getCompositionbyMusicId(Id: (self.musicDetailDict.object(forKey: "musicID") as! String))
-//
-//                                        for k in 0..<self.tempCompositionArray.count
-//                                        {
-//                                            let temponlineArray = self.tempCompositionArray.object(at: k) as! NSDictionary
-//                                            let tempOfflineArray = self.localCompositionArray.object(at: k) as! NSDictionary
-//                                            self.db.updateByID(createdDate: temponlineArray.object(forKey: "_createdDate") as! String, compositionId: temponlineArray.object(forKey: "_id") as! String, owner: temponlineArray.object(forKey: "_owner") as! String, _updatedDate: temponlineArray.object(forKey: "_updatedDate") as! String, instrumentAudioURL: temponlineArray.object(forKey: "instrumentAudioURL") as! String, instrumentDisplayOrder: String(temponlineArray.object(forKey: "instrumentDisplayOrder") as! Int), instrumentLive: String(temponlineArray.object(forKey: "instrumentLive") as! Int), instrumentName: temponlineArray.object(forKey: "instrumentName") as! String, instrumentVolumeDefault: tempOfflineArray.object(forKey: "instrumentVolumeDefault") as! String, musicID: temponlineArray.object(forKey: "musicID") as! String)
-//                                        }
-//                                        self.localCompositionArray = self.db.getCompositionbyMusicId(Id: (self.musicDetailDict.object(forKey: "musicID") as! String))
-//                                    }
                                 }
                             }
                             self.getotherSound()
