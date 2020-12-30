@@ -10,7 +10,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Aurora/ViewController.swift"
-            timestampString = "629987937.758925"
+            timestampString = "630841302.846573"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "632"
@@ -26,7 +26,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Aurora/ViewController.swift"
-            timestampString = "629987937.7590359"
+            timestampString = "630841302.847087"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "626"
@@ -74,12 +74,12 @@
                   moduleName = "Aurora"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/augurstechnologiespvtltd/Documents/Pawan/2020/August/Aurora/Aurora/MusicDetailViewController.swift"
-                  timestampString = "630007619.005923"
+                  timestampString = "630841303.567796"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "288"
                   endingLineNumber = "288"
-                  offsetFromSymbolStart = "24302">
+                  offsetFromSymbolStart = "18464">
                </Location>
                <Location
                   shouldBeEnabled = "Yes"
@@ -89,12 +89,12 @@
                   moduleName = "Aurora"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/augurstechnologiespvtltd/Documents/Pawan/2020/August/Aurora/Aurora/MusicDetailViewController.swift"
-                  timestampString = "630007619.008687"
+                  timestampString = "630841303.572793"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "288"
                   endingLineNumber = "288"
-                  offsetFromSymbolStart = "53078">
+                  offsetFromSymbolStart = "39844">
                </Location>
             </Locations>
          </BreakpointContent>

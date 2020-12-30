@@ -156,7 +156,6 @@ class ViewController: UIViewController {
                 }
             })
             task.resume()
-            
         } catch let parseError {
             print(parseError)
         }

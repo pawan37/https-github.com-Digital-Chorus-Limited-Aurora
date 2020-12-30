@@ -16,8 +16,12 @@ class PurchasePopViewController: UIViewController, SKProductsRequestDelegate, SK
     @IBOutlet weak var priceLabel: UILabel!
     @IBOutlet weak var descriptionLabel: UILabel!
     
+    @IBOutlet weak var purchaseDetail_popViewCtrl: UIView!
+    
     var tapGesture = UITapGestureRecognizer()
     let product_id: NSString = "com_augurs_aurora_songs" //product id
+    var item = SKProduct()
+    var isPurchaseClicked : Bool = true
     //    £9.99 / year
     
     override func viewDidLoad() {
@@ -35,18 +39,21 @@ class PurchasePopViewController: UIViewController, SKProductsRequestDelegate, SK
         popUpView?.layer.cornerRadius = 30
         continueBtn.layer.cornerRadius = 18
         
+        purchaseDetail_popViewCtrl?.layer.cornerRadius = 30
+        
         // IAP setup
         SKPaymentQueue.default().add(self)
+        sendRequest()
         //        SandBox: “https://sandbox.itunes.apple.com/verifyReceipt”
         //        iTunes Store : “https://buy.itunes.apple.com/verifyReceipt”
         //        receiptValidation()
     }
     override func viewWillAppear(_ animated: Bool) {
-        if let price = UserDefaults.standard.object(forKey: "isMusicPrice") {
-            priceLabel.text =  "£\(price) / year"
-        } else {
-            priceLabel.text =  "£0 / year"
-        }
+//        if let price = UserDefaults.standard.object(forKey: "isMusicPrice") {
+//            priceLabel.text =  "£\(price) / year"
+//        } else {
+//            priceLabel.text =  "£0 / year"
+//        }
         if let isMusicDesc = UserDefaults.standard.object(forKey: "isMusicDesc") {
             let replaced1 = (isMusicDesc as! String).replacingOccurrences(of: "\n", with: "\r\n")
             //let replaced2 = replaced1.replacingOccurrences(of: "\r\n\r\n", with: "\r\n")
@@ -87,7 +94,13 @@ class PurchasePopViewController: UIViewController, SKProductsRequestDelegate, SK
     }
     
     @IBAction func continueBtnAction(_ sender: Any) {
-        MBProgressHUD.showAdded(to: view.window, animated: true)
+        isPurchaseClicked = false
+        sendRequest()
+    }
+    
+    func sendRequest()
+    {
+        MBProgressHUD.showAdded(to: view, animated: true)
         if SKPaymentQueue.canMakePayments() {
             let productID:NSSet = NSSet(array: [self.product_id as NSString]);
             let productsRequest:SKProductsRequest = SKProductsRequest(productIdentifiers: productID as! Set<String>)
@@ -107,6 +120,19 @@ class PurchasePopViewController: UIViewController, SKProductsRequestDelegate, SK
         MBProgressHUD.showAdded(to: self.view, animated: true)
     }
     
+    @IBAction func subscriptionDetail_Action(_ sender: Any)
+    {
+        purchaseDetail_popViewCtrl.isHidden = false
+        popUpView.isHidden = true
+    }
+    
+    
+    @IBAction func closeBtn_Action(_ sender: Any)
+    {
+        purchaseDetail_popViewCtrl.isHidden = true
+        popUpView.isHidden = false
+    }
+    
     @IBAction func term_Action(_ sender: Any)
     {
         guard let url = URL(string: "https://www.aurorasleepmusic.com/app-terms") else { return }
@@ -114,6 +140,7 @@ class PurchasePopViewController: UIViewController, SKProductsRequestDelegate, SK
     }
     
     func buyProduct(product: SKProduct) {
+        isPurchaseClicked = true
         print("Sending the Payment Request to Apple")
         let payment = SKPayment(product: product)
         SKPaymentQueue.default().add(payment)
@@ -128,7 +155,25 @@ class PurchasePopViewController: UIViewController, SKProductsRequestDelegate, SK
                 print(validProduct.localizedTitle)
                 print(validProduct.localizedDescription)
                 print(validProduct.price)
-                self.buyProduct(product: validProduct)
+                print(validProduct)
+                if isPurchaseClicked == true
+                {
+                    let numberFormatter = NumberFormatter()
+                    numberFormatter.formatterBehavior = .behavior10_4
+                    numberFormatter.numberStyle = .currency
+                    numberFormatter.locale = validProduct.priceLocale
+                    let price1Str = numberFormatter.string(from: validProduct.price)!
+                  //  let tempString = String(format: "%.2f", price1Str)
+                    
+                    DispatchQueue.main.async {
+                        self.priceLabel.text =  price1Str + " / year"
+                        MBProgressHUD.hide(for: self.view, animated: true)
+                    }
+                }
+                else
+                {
+                  self.buyProduct(product: validProduct)
+                }
             } else {
                 print(validProduct.productIdentifier)
             }
@@ -138,7 +183,6 @@ class PurchasePopViewController: UIViewController, SKProductsRequestDelegate, SK
                 MBProgressHUD.hide(for: self.view.window, animated: true)
             }
         }
-        
     }
     
     func paymentQueue(_ queue: SKPaymentQueue, updatedTransactions transactions: [SKPaymentTransaction]) {
