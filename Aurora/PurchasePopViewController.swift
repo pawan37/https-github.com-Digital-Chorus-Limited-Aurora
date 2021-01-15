@@ -8,6 +8,7 @@
 import UIKit
 import StoreKit
 
+
 class PurchasePopViewController: UIViewController, SKProductsRequestDelegate, SKPaymentTransactionObserver {
     
     @IBOutlet var mainView_Ctrl: UIView!
@@ -43,6 +44,7 @@ class PurchasePopViewController: UIViewController, SKProductsRequestDelegate, SK
         
         // IAP setup
         SKPaymentQueue.default().add(self)
+        
         sendRequest()
         //        SandBox: “https://sandbox.itunes.apple.com/verifyReceipt”
         //        iTunes Store : “https://buy.itunes.apple.com/verifyReceipt”
@@ -106,6 +108,7 @@ class PurchasePopViewController: UIViewController, SKProductsRequestDelegate, SK
             let productsRequest:SKProductsRequest = SKProductsRequest(productIdentifiers: productID as! Set<String>)
             productsRequest.delegate = self
             productsRequest.start()
+            
             print("Fetching Products")
         } else {
             DispatchQueue.main.async {
@@ -144,6 +147,7 @@ class PurchasePopViewController: UIViewController, SKProductsRequestDelegate, SK
         print("Sending the Payment Request to Apple")
         let payment = SKPayment(product: product)
         SKPaymentQueue.default().add(payment)
+        
     }
     
     func productsRequest(_ request: SKProductsRequest, didReceive response: SKProductsResponse) {
@@ -172,6 +176,11 @@ class PurchasePopViewController: UIViewController, SKProductsRequestDelegate, SK
                 }
                 else
                 {
+//                    if #available(iOS 14.0, *) {
+//                        SKPaymentQueue.default().presentCodeRedemptionSheet()
+//                    } else {
+//                        // Fallback on earlier versions
+//                    }
                   self.buyProduct(product: validProduct)
                 }
             } else {
@@ -185,6 +194,8 @@ class PurchasePopViewController: UIViewController, SKProductsRequestDelegate, SK
         }
     }
     
+    
+    
     func paymentQueue(_ queue: SKPaymentQueue, updatedTransactions transactions: [SKPaymentTransaction]) {
         for transaction:AnyObject in transactions {
             if let trans:SKPaymentTransaction = transaction as? SKPaymentTransaction{
@@ -197,6 +208,7 @@ class PurchasePopViewController: UIViewController, SKProductsRequestDelegate, SK
                     NotificationCenter.default.post(name: Notification.Name("refreshTableView"), object: nil, userInfo: nil)
                     //Do unlocking etc stuff here in case of new purchase
                     SKPaymentQueue.default().finishTransaction(transaction as! SKPaymentTransaction)
+                    
                     DispatchQueue.main.async {
                         MBProgressHUD.hide(for: self.view.window, animated: true)
                     }

@@ -55,7 +55,10 @@ class ViewController: UIViewController {
         
         if supportingfuction.checkNetworkReachability() == true
         {
-            receiptValidation()
+            if let isPurchase = UserDefaults.standard.object(forKey: "isMusicPurchase"), isPurchase as! String == "yes"
+            {
+                receiptValidation()
+            }
             if UserDefaults.standard.object(forKey: "isOneTime") != nil
             {
                 getsonngListFromLocal()
@@ -112,7 +115,7 @@ class ViewController: UIViewController {
         let jsonDict: [String: AnyObject] = ["receipt-data" : recieptString! as AnyObject, "password": "2b521cf76a884670b496ac4641690d8b" as AnyObject]
         
         do {
-            MBProgressHUD.showAdded(to: view, animated: true)
+            MBProgressHUD.showAdded(to: self.view, animated: true)
             let requestData = try JSONSerialization.data(withJSONObject: jsonDict, options: JSONSerialization.WritingOptions.prettyPrinted)
             let storeURL = URL(string: verifyReceiptURL)!
             var storeRequest = URLRequest(url: storeURL)
@@ -152,11 +155,15 @@ class ViewController: UIViewController {
                         }
                     }
                 } catch let parseError {
+                    DispatchQueue.main.async {
+                        MBProgressHUD.hide(for: self!.view, animated: true)
+                    }
                     print(parseError)
                 }
             })
             task.resume()
         } catch let parseError {
+            MBProgressHUD.hide(for: self.view, animated: true)
             print(parseError)
         }
     }
@@ -207,7 +214,6 @@ class ViewController: UIViewController {
                                 print("Music desc: \(isMusicDesc)")
                                 UserDefaults.standard.set(isMusicDesc, forKey: "isMusicDesc")
                             }
-                            
                         }
                     }
                 }

@@ -162,9 +162,27 @@ class MusicDetailViewController: UIViewController, UITableViewDelegate, UITableV
     {
         if isPlay == true
         {
-        if UserDefaults.standard.object(forKey: "timerOn") != nil
-        {
-            if UserDefaults.standard.object(forKey: "timerOn") as! String == "yes"
+            if UserDefaults.standard.object(forKey: "timerOn") != nil
+            {
+                if UserDefaults.standard.object(forKey: "timerOn") as! String == "yes"
+                {
+                    timer_Lbl.isHidden = false
+                    infinity_Imageview.isHidden = true
+                    if UserDefaults.standard.object(forKey: "timerValues") != nil
+                    {
+                        let timerValue = UserDefaults.standard.object(forKey: "timerValues")  as! Int
+                        self.timer_Lbl.text = String(timerValue) + ":00"
+                        totalSecond = timerValue * 60
+                        print(totalSecond)
+                    }
+                }
+                else
+                {
+                    timer_Lbl.isHidden = true
+                    infinity_Imageview.isHidden = false
+                }
+            }
+            else
             {
                 timer_Lbl.isHidden = false
                 infinity_Imageview.isHidden = true
@@ -175,33 +193,15 @@ class MusicDetailViewController: UIViewController, UITableViewDelegate, UITableV
                     totalSecond = timerValue * 60
                     print(totalSecond)
                 }
+                else
+                {
+                    UserDefaults.standard.set(30, forKey: "timerValues")
+                    let timerValue = UserDefaults.standard.object(forKey: "timerValues")  as! Int
+                    self.timer_Lbl.text = String(timerValue) + ":00"
+                    totalSecond = timerValue * 60
+                    print(totalSecond)
+                }
             }
-            else
-            {
-                timer_Lbl.isHidden = true
-                infinity_Imageview.isHidden = false
-            }
-        }
-        else
-        {
-            timer_Lbl.isHidden = false
-            infinity_Imageview.isHidden = true
-            if UserDefaults.standard.object(forKey: "timerValues") != nil
-            {
-                let timerValue = UserDefaults.standard.object(forKey: "timerValues")  as! Int
-                self.timer_Lbl.text = String(timerValue) + ":00"
-                totalSecond = timerValue * 60
-                print(totalSecond)
-            }
-            else
-            {
-                UserDefaults.standard.set(30, forKey: "timerValues")
-                let timerValue = UserDefaults.standard.object(forKey: "timerValues")  as! Int
-                self.timer_Lbl.text = String(timerValue) + ":00"
-                totalSecond = timerValue * 60
-                print(totalSecond)
-            }
-        }
         }
     }
     
@@ -219,6 +219,7 @@ class MusicDetailViewController: UIViewController, UITableViewDelegate, UITableV
     
     @objc func resondToSwipeUp(gesture: UIGestureRecognizer)
     {
+        timer?.invalidate()
         isOpen = false
         openDesciption_btn.setImage(UIImage(named: "UParrow-1"), for: .normal)
         scrollView_Ctrl.isScrollEnabled = false
@@ -231,6 +232,7 @@ class MusicDetailViewController: UIViewController, UITableViewDelegate, UITableV
     
     @objc func respondToSwipeLeft(gesture: UIGestureRecognizer)
     {
+        timer?.invalidate()
         self.navigationController?.popViewController(animated: true)
     }
     
@@ -265,8 +267,6 @@ class MusicDetailViewController: UIViewController, UITableViewDelegate, UITableV
             let value = sender.value * 100
             let finalValue = Int(value)
             print(finalValue)
-          //  let sliderValue = Int(sender.value)
-          //  self.db.deleteComposition(Id: tempDict.object(forKey: "musicID") as! String, name: tempDict.object(forKey: "instrumentName") as! String)
             if supportingfuction.checkNetworkReachability() == true
             {
               self.db.updateByID(createdDate: tempDict.object(forKey: "_createdDate") as! String, compositionId: tempDict.object(forKey: "_id") as! String, owner: tempDict.object(forKey: "_owner") as! String, _updatedDate: tempDict.object(forKey: "_updatedDate") as! String, instrumentAudioURL: tempDict.object(forKey: "instrumentAudioURL") as! String, instrumentDisplayOrder: String(tempDict.object(forKey: "instrumentDisplayOrder") as! Int), instrumentLive: String(tempDict.object(forKey: "instrumentLive") as! Int), instrumentName: tempDict.object(forKey: "instrumentName") as! String, instrumentVolumeDefault: String(finalValue), musicID: tempDict.object(forKey: "musicID") as! String)
@@ -410,14 +410,7 @@ class MusicDetailViewController: UIViewController, UITableViewDelegate, UITableV
         }
      }
     
-//    func updateSound()
-//    {
-//        self.db.updateSoundByID(createdDate: tempDict.object(forKey: "_createdDate") as! String, SooundId: tempDict.object(forKey: "_id") as! String, owner: tempDict.object(forKey: "_owner") as! String, _updatedDate: tempDict.object(forKey: "_updatedDate") as! String, soundAudioURL: tempDict.object(forKey: "soundAudioURL") as! String, soundDisplayOrder: String(tempDict.object(forKey: "soundDisplayOrder") as! Int), soundLive: String(tempDict.object(forKey: "soundLive") as! Int), SoundName: tempDict.object(forKey: "soundName") as! String, instrumetVolumeDefault: "0", musicID: musicDetailDict.object(forKey: "musicID") as! String)
-//    }
-//    func updateSound()
-//    {
-//        self.db.updateSoundByID(createdDate: tempDict.object(forKey: "_createdDate") as! String, SooundId: tempDict.object(forKey: "_id") as! String, owner: tempDict.object(forKey: "_owner") as! String, _updatedDate: tempDict.object(forKey: "_updatedDate") as! String, soundAudioURL: tempDict.object(forKey: "soundAudioURL") as! String, soundDisplayOrder: String(tempDict.object(forKey: "soundDisplayOrder") as! Int), soundLive: String(tempDict.object(forKey: "soundLive") as! Int), SoundName: tempDict.object(forKey: "soundName") as! String, instrumetVolumeDefault: "0", musicID: musicDetailDict.object(forKey: "musicID") as! String)
-//    }
+
     
     @IBAction func favourite_Action(_ sender: Any)
     {
@@ -534,6 +527,7 @@ class MusicDetailViewController: UIViewController, UITableViewDelegate, UITableV
         {
             timer?.invalidate()
             let timerValue = UserDefaults.standard.object(forKey: "timerValues")  as! Int
+            totalSecond = timerValue * 60
             self.timer_Lbl.text = String(timerValue) + ":00"
             isPlay = true
             isPlayOnce = true

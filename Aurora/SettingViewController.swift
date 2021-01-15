@@ -114,6 +114,11 @@ extension SettingViewController : UITableViewDataSource, UITableViewDelegate
             guard let url = URL(string: "https://www.aurorasleepmusic.com/app-terms") else { return }
             UIApplication.shared.open(url)
         }
+        else if indexPath.row == 3
+        {
+            guard let url = URL(string: "https://apps.apple.com/us/app/aurora-sleep-music/id1544762843") else { return }
+            UIApplication.shared.open(url)
+        }
         else if indexPath.row == 6
         {
             guard let url = URL(string: "https://www.aurorasleepmusic.com/app-about") else { return }

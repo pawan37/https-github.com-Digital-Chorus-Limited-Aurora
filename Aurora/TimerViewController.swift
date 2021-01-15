@@ -43,15 +43,12 @@ class TimerViewController: UIViewController {
         bgView_Ctrl.clipsToBounds = true
         bgView_Ctrl.layer.cornerRadius = 30
         bgView_Ctrl.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMinXMinYCorner]
-        
-     //   faderView_Ctrl.layer.cornerRadius = 30.0
-      //  faderView_Ctrl.clipsToBounds = true
+    
         
         timerView_Ctrl.layer.cornerRadius = 30.0
         timerView_Ctrl.clipsToBounds = true
         
-     //   faderSlider_ctrl.setThumbImage(UIImage(named: "Ellipse 33"), for: .normal)
-    //    faderSlider_ctrl.setThumbImage(UIImage(named: "Ellipse 33"), for: .highlighted)
+     
         timerSlider_Ctrl.setThumbImage(UIImage(named: "Ellipse 33"), for: .normal)
         timerSlider_Ctrl.setThumbImage(UIImage(named: "Ellipse 33"), for: .highlighted)
         
@@ -60,12 +57,11 @@ class TimerViewController: UIViewController {
            if UserDefaults.standard.object(forKey: "timerOn") as! String == "yes"
            {
             switch_Ctrl.isOn = true
-          //  faderSlider_ctrl.minimumTrackTintColor = UIColor(red: 253/255, green: 141/255, blue: 141/255, alpha: 1)
+          
             timerSlider_Ctrl.minimumTrackTintColor = UIColor(red: 253/255, green: 141/255, blue: 141/255, alpha: 1)
-         //   faderSlider_ctrl.maximumTrackTintColor = UIColor(red: 253/255, green: 141/255, blue: 141/255, alpha: 1)
+        
             timerSlider_Ctrl.maximumTrackTintColor = UIColor(red: 253/255, green: 141/255, blue: 141/255, alpha: 1)
-         //   faderSlider_ctrl.setThumbImage(UIImage(named: "Ellipse 33"), for: .normal)
-         //   faderSlider_ctrl.setThumbImage(UIImage(named: "Ellipse 33"), for: .highlighted)
+        
             timerSlider_Ctrl.setThumbImage(UIImage(named: "Ellipse 33"), for: .normal)
             timerSlider_Ctrl.setThumbImage(UIImage(named: "Ellipse 33"), for: .highlighted)
             Aurora_lbl.textColor = UIColor(red: 253/255, green: 141/255, blue: 141/255, alpha: 1)
@@ -82,26 +78,7 @@ class TimerViewController: UIViewController {
           //  faderSlider_ctrl.value = Float(faderValue)
             var tempFader : Int = 0
             tempFader = tempfaderValue - 5
-//            if tempfaderValue == 10
-//            {
-//                tempFader = 5
-//            }
-//            else if tempfaderValue > 10 && tempfaderValue <= 30
-//            {
-//                tempFader = 25
-//            }
-//            else if tempfaderValue > 30 && tempfaderValue <= 60
-//            {
-//                tempFader = 55
-//            }
-//            else if tempfaderValue > 60 && tempfaderValue <= 120
-//            {
-//                tempFader = 115
-//            }
-//            else if tempfaderValue > 120 && tempfaderValue <= 180
-//            {
-//                tempFader = 175
-//            }
+
             
             if UserDefaults.standard.object(forKey: "faderOn") != nil
             {
@@ -127,12 +104,9 @@ class TimerViewController: UIViewController {
             timer_Lbl.textColor = UIColor.gray
             timerSettingLbl.textColor = UIColor.gray
             countingLbl.textColor = UIColor.gray
-          //  faderSlider_ctrl.minimumTrackTintColor = UIColor.gray
             timerSlider_Ctrl.minimumTrackTintColor = UIColor.gray
-         //   faderSlider_ctrl.maximumTrackTintColor = UIColor.gray
             timerSlider_Ctrl.maximumTrackTintColor = UIColor.gray
-          //  faderSlider_ctrl.setThumbImage(UIImage(named: "Ellipse 43"), for: .normal)
-          //  faderSlider_ctrl.setThumbImage(UIImage(named: "Ellipse 43"), for: .highlighted)
+          
             timerSlider_Ctrl.setThumbImage(UIImage(named: "Ellipse 43"), for: .normal)
             timerSlider_Ctrl.setThumbImage(UIImage(named: "Ellipse 43"), for: .highlighted)
             faderSwitch_ctrl.isOn = false
@@ -188,9 +162,7 @@ class TimerViewController: UIViewController {
                 {
                     description_Lbl.text = "The music will stop after " + String(tempfaderValue) + " minutes"
                 }
-                
-               // let faderSliderValue = UserDefaults.standard.object(forKey: "timerValues") as! Int
-             //   faderSlider_ctrl.value = Float(faderSliderValue)
+             
             }
             else
             {
@@ -201,18 +173,16 @@ class TimerViewController: UIViewController {
                 //faderSlider_ctrl.value = 23.0
             }
             switch_Ctrl.isOn = true
-          //  faderSlider_ctrl.minimumTrackTintColor = UIColor(red: 253/255, green: 141/255, blue: 141/255, alpha: 1)
+         
             timerSlider_Ctrl.minimumTrackTintColor = UIColor(red: 253/255, green: 141/255, blue: 141/255, alpha: 1)
-          //  faderSlider_ctrl.maximumTrackTintColor = UIColor(red: 253/255, green: 141/255, blue: 141/255, alpha: 1)
+         
             timerSlider_Ctrl.maximumTrackTintColor = UIColor(red: 253/255, green: 141/255, blue: 141/255, alpha: 1)
-         //   faderSlider_ctrl.setThumbImage(UIImage(named: "Ellipse 33"), for: .normal)
-          //  faderSlider_ctrl.setThumbImage(UIImage(named: "Ellipse 33"), for: .highlighted)
+        
             timerSlider_Ctrl.setThumbImage(UIImage(named: "Ellipse 33"), for: .normal)
             timerSlider_Ctrl.setThumbImage(UIImage(named: "Ellipse 33"), for: .highlighted)
             
             Aurora_lbl.textColor = UIColor(red: 253/255, green: 141/255, blue: 141/255, alpha: 1)
             description_Lbl.textColor = UIColor.black
-          //  fader_lbl.textColor = UIColor.black
             timer_Lbl.textColor = UIColor.black
             timerSettingLbl.textColor = UIColor.black
             countingLbl.textColor = UIColor.black
@@ -235,27 +205,9 @@ class TimerViewController: UIViewController {
         {
             faderSwitch_ctrl.isOn = false
         }
-        
-//        let moviePath = Bundle.main.path(forResource: "aurora1024", ofType: "mp4")
-//        if let path = moviePath {
-//            let url = NSURL.fileURL(withPath: path)
-//            self.avPlayer = AVPlayer(url: url)
-//            self.avpController = AVPlayerViewController()
-//            self.avpController.player = self.avPlayer
-//            avpController.view.frame = videoBgView_Ctrl.frame
-//            avpController.videoGravity = AVLayerVideoGravity.resizeAspectFill
-//            avpController.showsPlaybackControls = false
-//            self.addChild(avpController)
-//            self.videoBgView_Ctrl.addSubview(avpController.view)
-//            self.avPlayer.play()
-//        }
-        // Do any additional setup after loading the view.
     }
     
-//    func updateSound()
-//    {
-//        self.db.updateSoundByID(createdDate: tempDict.object(forKey: "_createdDate") as! String, SooundId: tempDict.object(forKey: "_id") as! String, owner: tempDict.object(forKey: "_owner") as! String, _updatedDate: tempDict.object(forKey: "_updatedDate") as! String, soundAudioURL: tempDict.object(forKey: "soundAudioURL") as! String, soundDisplayOrder: String(tempDict.object(forKey: "soundDisplayOrder") as! Int), soundLive: String(tempDict.object(forKey: "soundLive") as! Int), SoundName: tempDict.object(forKey: "soundName") as! String, instrumetVolumeDefault: "0", musicID: musicDetailDict.object(forKey: "musicID") as! String)
-//    }
+
     
     @IBAction func faderSliderChange_Action(_ sender: UISlider)
     {
@@ -276,27 +228,7 @@ class TimerViewController: UIViewController {
         timerValue = String(timerSlider)
         var tempFader : Int = 0
         tempFader = timerSlider - 5
-//        if timerSlider == 10
-//        {
-//            tempFader = 5
-//        }
-//        else if timerSlider > 10 && timerSlider <= 30
-//        {
-//            tempFader = 25
-//        }
-//        else if timerSlider > 30 && timerSlider <= 60
-//        {
-//            tempFader = 55
-//        }
-//        else if timerSlider > 60 && timerSlider <= 120
-//        {
-//            tempFader = 115
-//        }
-//        else if timerSlider > 120 && timerSlider <= 180
-//        {
-//            tempFader = 175
-//        }
-        
+
         if UserDefaults.standard.object(forKey: "faderOn") != nil
         {
            if UserDefaults.standard.object(forKey: "faderOn") as? String == "yes"
@@ -325,12 +257,11 @@ class TimerViewController: UIViewController {
         if switch_Ctrl.isOn == true
         {
             UserDefaults.standard.set("yes", forKey: "timerOn")
-          //  faderSlider_ctrl.minimumTrackTintColor = UIColor(red: 253/255, green: 141/255, blue: 141/255, alpha: 1)
+         
             timerSlider_Ctrl.minimumTrackTintColor = UIColor(red: 253/255, green: 141/255, blue: 141/255, alpha: 1)
-          //  faderSlider_ctrl.maximumTrackTintColor = UIColor(red: 253/255, green: 141/255, blue: 141/255, alpha: 1)
+         
             timerSlider_Ctrl.maximumTrackTintColor = UIColor(red: 253/255, green: 141/255, blue: 141/255, alpha: 1)
-         //   faderSlider_ctrl.setThumbImage(UIImage(named: "Ellipse 33"), for: .normal)
-         //   faderSlider_ctrl.setThumbImage(UIImage(named: "Ellipse 33"), for: .highlighted)
+        
             timerSlider_Ctrl.setThumbImage(UIImage(named: "Ellipse 33"), for: .normal)
             timerSlider_Ctrl.setThumbImage(UIImage(named: "Ellipse 33"), for: .highlighted)
                 Aurora_lbl.textColor = UIColor(red: 253/255, green: 141/255, blue: 141/255, alpha: 1)
@@ -349,12 +280,9 @@ class TimerViewController: UIViewController {
             timer_Lbl.textColor = UIColor.gray
             timerSettingLbl.textColor = UIColor.gray
             countingLbl.textColor = UIColor.gray
-         //   faderSlider_ctrl.minimumTrackTintColor = UIColor.gray
             timerSlider_Ctrl.minimumTrackTintColor = UIColor.gray
-           // faderSlider_ctrl.maximumTrackTintColor = UIColor.gray
             timerSlider_Ctrl.maximumTrackTintColor = UIColor.gray
-          //  faderSlider_ctrl.setThumbImage(UIImage(named: "Ellipse 43"), for: .normal)
-         //   faderSlider_ctrl.setThumbImage(UIImage(named: "Ellipse 43"), for: .highlighted)
+         
             timerSlider_Ctrl.setThumbImage(UIImage(named: "Ellipse 43"), for: .normal)
             timerSlider_Ctrl.setThumbImage(UIImage(named: "Ellipse 43"), for: .highlighted)
             faderSwitch_ctrl.isOn = false
@@ -365,31 +293,10 @@ class TimerViewController: UIViewController {
     @IBAction func faderSwitch_Action(_ sender: Any)
     {
         let tempfaderValue = UserDefaults.standard.object(forKey: "timerValues") as! Int
-        //let faderValue = UserDefaults.standard.object(forKey: "faderValues") as! Int
         timerSlider_Ctrl.value = Float(tempfaderValue)
-        //  faderSlider_ctrl.value = Float(faderValue)
         var tempFader : Int = 0
         tempFader = tempfaderValue - 5
-//        if tempfaderValue == 10
-//        {
-//            tempFader = 5
-//        }
-//        else if tempfaderValue > 10 && tempfaderValue <= 30
-//        {
-//            tempFader = 25
-//        }
-//        else if tempfaderValue > 30 && tempfaderValue <= 60
-//        {
-//            tempFader = 55
-//        }
-//        else if tempfaderValue > 60 && tempfaderValue <= 120
-//        {
-//            tempFader = 115
-//        }
-//        else if tempfaderValue > 120 && tempfaderValue <= 180
-//        {
-//            tempFader = 175
-//        }
+
         if faderSwitch_ctrl.isOn
         {
            UserDefaults.standard.set("yes", forKey: "faderOn")
@@ -401,7 +308,5 @@ class TimerViewController: UIViewController {
             description_Lbl.text = "The music will stop after " + String(tempfaderValue) + " minutes"
         }
     }
-    
- 
     
 }
