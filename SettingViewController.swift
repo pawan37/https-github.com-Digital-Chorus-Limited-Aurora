@@ -128,18 +128,14 @@ extension SettingViewController : UITableViewDataSource, UITableViewDelegate
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath)
     {
-      
         if indexPath.row == 3
         {
             guard let url = URL(string: "https://apps.apple.com/us/app/aurora-sleep-music/id1544762843") else { return }
             UIApplication.shared.open(url)
         }
-        else if indexPath.row == 2
-        {
-            
+        else if indexPath.row == 2 {
         }
-        else if indexPath.row == 1
-        {
+        else if indexPath.row == 1 {
             let vc = self.storyboard?.instantiateViewController(withIdentifier: "ManageDownloadViewController") as! ManageDownloadViewController
             self.navigationController?.pushViewController(vc, animated: true)
         }
@@ -158,5 +154,75 @@ extension SettingViewController : UITableViewDataSource, UITableViewDelegate
         }
     }
 }
+
+
+extension ManageDownloadViewController: UITableViewDataSource, UITableViewDelegate {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return downloadArray.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell : UITableViewCell!
+        cell = tableView.dequeueReusableCell(withIdentifier: "Setting")
+        let title = cell.viewWithTag(1) as? UILabel
+        let size = cell.viewWithTag(2) as? UILabel
+        let delete = cell.viewWithTag(3) as? UIButton
+        delete?.layer.cornerRadius = 5.0
+        delete?.clipsToBounds = true
+        let downloadDict = downloadArray.object(at: indexPath.row) as? NSDictionary
+        title?.text = downloadDict?.object(forKey: "musicName") as? String
+        size?.text = ((downloadDict?.object(forKey: "size") as? String)!) + "mb"
+        //  title?.text = songList[indexPath.row].name
+        // size?.text = songList[indexPath.row].size
+        cell.selectionStyle = UITableViewCell.SelectionStyle.none
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+    }
+    
+    
+    func deleteAction(indexPath: IndexPath) {
+        let tempDict = downloadArray.object(at: indexPath.row) as? NSDictionary
+        self.tableview_Ctrl.beginUpdates()
+        self.downloadArray.removeObject(at: indexPath.row)
+        self.db.deleteDownloadbyID(id: (tempDict?.object(forKey: "musicID") as? String)!)
+        let compositionArray = self.db.getCompositionbyMusicId(Id: (tempDict?.object(forKey: "musicID") as! String))
+        print(compositionArray)
+        for i in 0..<compositionArray.count
+        {
+            let tempDict = compositionArray.object(at: i) as! NSDictionary
+            if let audioUrl = URL(string: tempDict.object(forKey: "instrumentAudioURL") as! String) {
+                // then lets create your document folder url
+                let documentsDirectoryURL =  FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+                
+                // lets create your destination file url
+                let destinationUrl = documentsDirectoryURL.appendingPathComponent(audioUrl.lastPathComponent)
+                print(destinationUrl)
+                
+                // to check if it exists before downloading it
+                if FileManager.default.fileExists(atPath: destinationUrl.path) {
+                    print("The file already exists at path")
+                    do {
+                        try FileManager.default.removeItem(at: destinationUrl)
+                    } catch let error as NSError {
+                        print(error.debugDescription)
+                    }
+                } else {
+                    print("file doesn't exist")
+                }
+            }
+        }
+        //  self.songList.remove(at: indexPath.row)
+        self.tableview_Ctrl.deleteRows(at: [indexPath], with: .automatic)
+        self.tableview_Ctrl.endUpdates()
+    }
+}
+
+
+
+
+
 
 
