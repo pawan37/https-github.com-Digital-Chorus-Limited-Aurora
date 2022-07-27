@@ -12,6 +12,7 @@ import SpriteKit
 import SwiftySound
 import AVFoundation
 import EzPopup
+import AVKit
 
 
 class MusicDetailViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, PopupViewControllerDelegate {
@@ -34,6 +35,7 @@ class MusicDetailViewController: UIViewController, UITableViewDelegate, UITableV
     @IBOutlet weak var desciption_txtView: UITextView!
     @IBOutlet weak var openDesciption_btn: UIButton!
     @IBOutlet weak var heightCnst: NSLayoutConstraint!
+    @IBOutlet weak var AnimationClose_btn: UIButton!
     
     @IBOutlet weak var collectionView_Ctrl: UICollectionView!
     @IBOutlet weak var scoreLbl: UILabel!
@@ -45,8 +47,8 @@ class MusicDetailViewController: UIViewController, UITableViewDelegate, UITableV
     @IBOutlet weak var playBTn: UIButton!
     
     @IBOutlet weak var reviewTop_const: NSLayoutConstraint!
-    
-   
+    @IBOutlet weak var blurView: UIView!
+    @IBOutlet weak var Animation_CollectionView: UICollectionView!
     
     
     let timerOptionArray = ["Infinite loop","10 mins","20 mins","30 mins","40 mins","1 hour","2 hours","4 hours","8 hours"]
@@ -76,8 +78,12 @@ class MusicDetailViewController: UIViewController, UITableViewDelegate, UITableV
     var totalSize : Float = 0.0
     var iscalculateSize : Bool = true
     var reviewArray : NSMutableArray = []
+    var motionAnimatArray : NSMutableArray = []
     let customAlertVC = TimerOptionPopViewController.instantiate()
+    var avPlayer: AVPlayer!
+    var isuserPaid : String = ""
     
+    @IBOutlet weak var backgroundAnimation_View: UIView!
     @IBOutlet weak var timer_Lbl: UILabel!
     @IBOutlet weak var infinity_Imageview: UIImageView!
     
@@ -117,123 +123,57 @@ class MusicDetailViewController: UIViewController, UITableViewDelegate, UITableV
         swipeDown3.direction = .right
         self.uperdescriptionView.addGestureRecognizer(swipeDown3)
         
-        let blurEffect = UIBlurEffect(style: UIBlurEffect.Style.dark)
-        let blurEffectView = UIVisualEffectView(effect: blurEffect)
-        blurEffectView.frame = bgImage_Imageview.frame
-        blurEffectView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        bgImage_Imageview.addSubview(blurEffectView)
-        
-        bannerImage.layer.cornerRadius = 20.0
-        bannerImage.clipsToBounds = true
-        
-        if  musicDetailDict.object(forKey: "largeImageURL") != nil
-        {
-            bannerImage?.setImageWith(URL(string: (musicDetailDict.object(forKey: "largeImageURL") as? String)!), placeholderImage: UIImage(named: "user-1"))
-        }
-        else
-        {
-            bannerImage.image = UIImage(named: "songBanner")
-        }
-        
-       // desciption_txtView.text = musicDetailDict.object(forKey: "musicDescription") as? String
-        
-        print(musicDetailDict)
-        self.favourite = self.db.read()
-        
-        for i in 0..<self.favourite.count
-        {
-            if musicDetailDict.object(forKey: "musicID") as? String == self.favourite[i].musicId
-            {
-                heartIcon_Btn.setImage(UIImage(named: "heart-Pink-2"), for: .normal)
-                isFavourite = false
-                break
-            }
-        }
-        
-        if musicDetailDict.object(forKey: "musicDescription") != nil
-        {
-            desciption_txtView.text = (musicDetailDict.object(forKey: "musicDescription") as! String)
-            description_Lbl.text = (musicDetailDict.object(forKey: "musicDescription") as! String)
-        }
-        
-        if let score = musicDetailDict.object(forKey: "relaxationScore")
-        {
-            scoreLbl.text = score as? String
-        } else {
-            scoreLbl.text = "0.0"
-        }
-        
-        if (musicDetailDict.object(forKey: "musicDescription") != nil) && (musicDetailDict.object(forKey: "musicDescription2") != nil)
-        {
-            desciption_txtView.text = (musicDetailDict.object(forKey: "musicDescription") as! String) + "\n" + "\n" + (musicDetailDict.object(forKey: "musicDescription2") as! String)
-        }
         
         getMusicComposition()
+        setUPMusicDetail()
         
 
         if let emitter = NSKeyedUnarchiver.unarchiveObject(withFile: Bundle.main.path(forResource: "Spark", ofType: "sks")!) as? SKEmitterNode {
-            rectangleBgView.layer.borderWidth = 1.0
-            rectangleBgView.layer.borderColor = UIColor.lightGray.cgColor
-            rectangleBgView.layer.cornerRadius = rectangleBgView.frame.size.width / 2
-            rectangleBgView.addParticlesAnimation(with: emitter)
+                rectangleBgView.layer.borderWidth = 1.0
+                rectangleBgView.layer.borderColor = UIColor.lightGray.cgColor
+                rectangleBgView.layer.cornerRadius = rectangleBgView.frame.size.width / 2
+                rectangleBgView.addParticlesAnimation(with: emitter)
         }
         
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
         self.collectionView_Ctrl.collectionViewLayout = layout
         
+        let layout2 = UICollectionViewFlowLayout()
+        layout2.scrollDirection = .horizontal
+        self.Animation_CollectionView.collectionViewLayout = layout2
+        
         greenView_Ctrl!.layer.cornerRadius = (greenView_Ctrl?.frame.size.height)! / 2
         greenView_Ctrl!.clipsToBounds = true
+        
+        getAnimation()
+        getReviews()
+        
+        
+//        if !UIAccessibility.isReduceTransparencyEnabled {
+//            blurView.backgroundColor = .clear
+//            if #available(iOS 13.0, *) {
+//                let blurEffect = UIBlurEffect(style: .dark)
+//                let blurEffectView = UIVisualEffectView(effect: blurEffect)
+//                //always fill the view
+//                blurEffectView.frame = self.view.bounds
+//                blurEffectView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+//                blurView.addSubview(blurEffectView)
+//            } else {
+//                // Fallback on earlier versions
+//            }
+//            //if you have more UIViews, use an insertSubview API to place it where needed
+//        } else {
+//            blurView.backgroundColor = .black
+//        }
         
        
     }
     
     override func viewWillAppear(_ animated: Bool)
     {
-        if isPlay == true
-        {
-            if UserDefaults.standard.object(forKey: "timerOn") != nil
-            {
-                if UserDefaults.standard.object(forKey: "timerOn") as! String == "yes"
-                {
-                    timer_Lbl.isHidden = false
-                    infinity_Imageview.isHidden = true
-                    if UserDefaults.standard.object(forKey: "timerValues") != nil
-                    {
-                        let timerValue = UserDefaults.standard.object(forKey: "timerValues")  as! Int
-                        self.timer_Lbl.text = String(timerValue) + ":00"
-                        totalSecond = timerValue * 60
-                        print(totalSecond)
-                    }
-                }
-                else
-                {
-                    timer_Lbl.isHidden = true
-                    infinity_Imageview.isHidden = false
-                }
-            }
-            else
-            {
-                timer_Lbl.isHidden = false
-                infinity_Imageview.isHidden = true
-                if UserDefaults.standard.object(forKey: "timerValues") != nil
-                {
-                    let timerValue = UserDefaults.standard.object(forKey: "timerValues")  as! Int
-                    self.timer_Lbl.text = String(timerValue) + ":00"
-                    totalSecond = timerValue * 60
-                    print(totalSecond)
-                }
-                else
-                {
-                    UserDefaults.standard.set(60, forKey: "timerValues")
-                    let timerValue = UserDefaults.standard.object(forKey: "timerValues")  as! Int
-                    self.timer_Lbl.text = String(timerValue) + ":00"
-                    totalSecond = timerValue * 60
-                    print(totalSecond)
-                }
-            }
-        }
-        getReviews()
+        setupTimer()
+        
     }
     
     @objc func respondToSwipeGesture(gesture: UIGestureRecognizer)
@@ -277,6 +217,7 @@ class MusicDetailViewController: UIViewController, UITableViewDelegate, UITableV
         timer?.invalidate()
         self.navigationController?.popViewController(animated: true)
     }
+    
     
     
     @IBAction func sliderValueChanged_Action(_ sender: UISlider)
@@ -377,6 +318,19 @@ class MusicDetailViewController: UIViewController, UITableViewDelegate, UITableV
         }
     }
     
+    
+    @IBAction func closeAnimation_Action(_ sender: Any) {
+        
+        UIView.transition(with: self.view!, duration: 0.8, options: .transitionCrossDissolve, animations: {() -> Void in
+        self.blurView.isHidden = true
+        self.backgroundAnimation_View.isHidden = true
+            self.AnimationClose_btn.isHidden = true
+
+            //   self.scrollView_Ctrl.isUserInteractionEnabled = true
+        }, completion: { _ in })
+    }
+    
+    
     @IBAction func musicTimerBtn_Action(_ sender: Any) {
         if isPlay == false
         {
@@ -398,7 +352,6 @@ class MusicDetailViewController: UIViewController, UITableViewDelegate, UITableV
             popupVC.delegate = self
             present(popupVC, animated: true, completion: nil)
         }
-        
     }
     
     @IBAction func openDescription_Action(_ sender: UIButton)
@@ -642,6 +595,21 @@ class MusicDetailViewController: UIViewController, UITableViewDelegate, UITableV
         }
     }
     
+    @IBAction func animation_Action(_ sender: Any) {
+        if motionAnimatArray.count > 0{
+        UIView.transition(with: self.view!, duration: 0.8, options: .transitionCrossDissolve, animations: {() -> Void in
+            self.blurView.isHidden = false
+            self.backgroundAnimation_View.isHidden = false
+            self.AnimationClose_btn.isHidden = false
+            self.Animation_CollectionView.reloadData()
+            //   self.scrollView_Ctrl.isUserInteractionEnabled = true
+        }, completion: { _ in })
+        } else {
+            supportingfuction.showMessageHudWithMessage("Some thing went wrong. Please try again" as NSString,delay: 2.0)
+        }
+    }
+    
+    
     func startTimer()
     {
         timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(countdown), userInfo: nil, repeats: true)
@@ -847,6 +815,7 @@ class MusicDetailViewController: UIViewController, UITableViewDelegate, UITableV
                 }
                 else
                 {
+                    MBProgressHUD.hide(for: self.view, animated: true)
                     // supportingfuction.showMessageHudWithMessage("No Review Found." as NSString,delay: 2.0)
                 }
             }
@@ -1626,12 +1595,28 @@ extension MusicDetailViewController: UICollectionViewDelegate, UICollectionViewD
 {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int
     {
-        return reviewArray.count + 1
+        if collectionView == Animation_CollectionView{
+            return motionAnimatArray.count
+        } else {
+            return reviewArray.count + 1
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell
     
     {
+        if collectionView == Animation_CollectionView{
+            let cell = Animation_CollectionView.dequeueReusableCell(withReuseIdentifier: "Animation", for: indexPath as IndexPath) as UICollectionViewCell
+            let bgImage_ImageView = cell.viewWithTag(1) as? UIImageView
+            
+            let animationDict = motionAnimatArray.object(at: indexPath.row) as? NSDictionary ?? [:]
+            bgImage_ImageView?.setImageWith(URL(string: (animationDict.object(forKey: "thumbImage") as? String)!), placeholderImage: UIImage(named: "musicDetailBG"))
+            
+            bgImage_ImageView?.layer.cornerRadius = 20
+            bgImage_ImageView?.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMinXMinYCorner]
+            
+            return cell
+        } else {
         if indexPath.row == reviewArray.count
         {
             let cell = collectionView_Ctrl.dequeueReusableCell(withReuseIdentifier: "Add", for: indexPath as IndexPath) as UICollectionViewCell
@@ -1692,106 +1677,83 @@ extension MusicDetailViewController: UICollectionViewDelegate, UICollectionViewD
             
             return cell
         }
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath)
     {
-        if indexPath.row == reviewArray.count
-        {
-            let vc = self.storyboard?.instantiateViewController(withIdentifier: "AddReviewViewController") as! AddReviewViewController
-            self.navigationController?.pushViewController(vc, animated: true)
+        if collectionView == Animation_CollectionView{
+            let tempDict = motionAnimatArray.object(at: indexPath.row) as? NSDictionary ?? [:]
+            
+            guard let url = URL(string: tempDict.object(forKey: "mp4Url") as? String ?? "") else {
+                        return
+                    }
+            avPlayer = nil
+                    // Create an AVPlayer, passing it the HTTP Live Streaming URL.
+            avPlayer = AVPlayer(url: url)
+                    let controller = AVPlayerViewController()
+                    controller.player = avPlayer
+            controller.videoGravity = .resizeAspectFill
+            controller.showsPlaybackControls = false
+            NotificationCenter.default.addObserver(self, selector: #selector(closePlayer), name: NSNotification.Name(rawValue: "close"), object: controller.player?.currentItem)
+            let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(closePlayer))
+                controller.view.addGestureRecognizer(tapGestureRecognizer)
+            
+                    present(controller, animated: true) {
+                        
+                        NotificationCenter.default.addObserver(self, selector: #selector(MusicDetailViewController.finishVideo), name: NSNotification.Name.AVPlayerItemDidPlayToEndTime, object: self.avPlayer?.currentItem)
+                        
+                        self.avPlayer.play()
+                    }
+            
         } else {
-            let tempDict = reviewArray.object(at: indexPath.row) as? NSDictionary
-            let vc = self.storyboard?.instantiateViewController(withIdentifier: "ReviewresponseViewController") as! ReviewresponseViewController
-            vc.previewDetail = tempDict?.mutableCopy() as! NSDictionary
-            vc.musicDetail = musicDetailDict
-            self.navigationController?.pushViewController(vc, animated: true)
+            if indexPath.row == reviewArray.count
+            {
+                let vc = self.storyboard?.instantiateViewController(withIdentifier: "AddReviewViewController") as! AddReviewViewController
+                self.navigationController?.pushViewController(vc, animated: true)
+            } else {
+                let tempDict = reviewArray.object(at: indexPath.row) as? NSDictionary
+                let vc = self.storyboard?.instantiateViewController(withIdentifier: "ReviewresponseViewController") as! ReviewresponseViewController
+                vc.previewDetail = tempDict?.mutableCopy() as! NSDictionary
+                vc.musicDetail = musicDetailDict
+                self.navigationController?.pushViewController(vc, animated: true)
+            }
         }
-       
+    }
+    
+    @objc func finishVideo(notification: Notification)
+    {
+        if let playerItem = notification.object as? AVPlayerItem {
+                playerItem.seek(to: CMTime.zero, completionHandler: nil)
+            self.avPlayer.play()
+            }
+    }
+    
+    @objc func closePlayer() {
+        dismiss(animated: true)
+        
+        NotificationCenter.default.removeObserver(self)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize
     
     {
-        if indexPath.row == reviewArray.count
-        {
-            return CGSize(width: 154, height: 154)
-        }
-        else
-        {
-            return CGSize(width: 256, height: 154)
+        if collectionView == Animation_CollectionView{
+            return CGSize(width: 160, height: 222)
+        } else {
+            if indexPath.row == reviewArray.count
+            {
+                return CGSize(width: 154, height: 154)
+            }
+            else
+            {
+                return CGSize(width: 256, height: 154)
+            }
         }
     }
     
    
 }
-
-
-extension ManageDownloadViewController: UITableViewDataSource, UITableViewDelegate {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return downloadArray.count
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell : UITableViewCell!
-        cell = tableView.dequeueReusableCell(withIdentifier: "Setting")
-        let title = cell.viewWithTag(1) as? UILabel
-        let size = cell.viewWithTag(2) as? UILabel
-        let delete = cell.viewWithTag(3) as? UIButton
-        delete?.layer.cornerRadius = 5.0
-        delete?.clipsToBounds = true
-        let downloadDict = downloadArray.object(at: indexPath.row) as? NSDictionary
-        title?.text = downloadDict?.object(forKey: "musicName") as? String
-        size?.text = ((downloadDict?.object(forKey: "size") as? String)!) + "mb"
-        //  title?.text = songList[indexPath.row].name
-        // size?.text = songList[indexPath.row].size
-        cell.selectionStyle = UITableViewCell.SelectionStyle.none
-        return cell
-    }
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
-    }
-    
-    
-    func deleteAction(indexPath: IndexPath) {
-        let tempDict = downloadArray.object(at: indexPath.row) as? NSDictionary
-        self.tableview_Ctrl.beginUpdates()
-        self.downloadArray.removeObject(at: indexPath.row)
-        self.db.deleteDownloadbyID(id: (tempDict?.object(forKey: "musicID") as? String)!)
-        let compositionArray = self.db.getCompositionbyMusicId(Id: (tempDict?.object(forKey: "musicID") as! String))
-        print(compositionArray)
-        for i in 0..<compositionArray.count
-        {
-            let tempDict = compositionArray.object(at: i) as! NSDictionary
-            if let audioUrl = URL(string: tempDict.object(forKey: "instrumentAudioURL") as! String) {
-                // then lets create your document folder url
-                let documentsDirectoryURL =  FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
-                
-                // lets create your destination file url
-                let destinationUrl = documentsDirectoryURL.appendingPathComponent(audioUrl.lastPathComponent)
-                print(destinationUrl)
-                
-                // to check if it exists before downloading it
-                if FileManager.default.fileExists(atPath: destinationUrl.path) {
-                    print("The file already exists at path")
-                    do {
-                        try FileManager.default.removeItem(at: destinationUrl)
-                    } catch let error as NSError {
-                        print(error.debugDescription)
-                    }
-                } else {
-                    print("file doesn't exist")
-                }
-            }
-        }
-        //  self.songList.remove(at: indexPath.row)
-        self.tableview_Ctrl.deleteRows(at: [indexPath], with: .automatic)
-        self.tableview_Ctrl.endUpdates()
-    }
-}
-
-
 
 
 
